@@ -34,4 +34,60 @@ public class Maintenance {
     @JoinColumn(name = "vendor_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Vendor vendor;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Property getProperty() {
+        return property;
+    }
+
+    public void setProperty(Property property) {
+        this.property = property;
+    }
+
+    public String getTask() {
+        return task;
+    }
+
+    public void setTask(String task) {
+        this.task = task;
+    }
+
+    public Date getLastCompletionDate() {
+        return lastCompletionDate;
+    }
+
+    public void setLastCompletionDate(Date lastCompletionDate) {
+        this.lastCompletionDate = lastCompletionDate;
+    }
+
+    public Integer getFrequencyInDays() {
+        return frequencyInDays;
+    }
+
+    public void setFrequencyInDays(Integer frequencyInDays) {
+        this.frequencyInDays = frequencyInDays;
+    }
+
+    public Boolean getRecurring() {
+        return isRecurring;
+    }
+
+    public void setRecurring(Boolean recurring) {
+        isRecurring = recurring;
+    }
+
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
 }
