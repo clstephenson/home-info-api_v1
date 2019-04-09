@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class Maintenance {
+public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,11 +35,11 @@ public class Maintenance {
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Vendor vendor;
 
-    public Maintenance() {
+    public Task() {
     }
 
-    public Maintenance(Property property, String task, Date lastCompletionDate, Integer frequencyInDays, Boolean isRecurring,
-                       Vendor vendor) {
+    public Task(Property property, String task, Date lastCompletionDate, Integer frequencyInDays, Boolean isRecurring,
+                Vendor vendor) {
         this.property = property;
         this.task = task;
         this.lastCompletionDate = lastCompletionDate;
