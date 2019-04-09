@@ -30,6 +30,16 @@ public class Property extends AuditModel {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
+    public Property() {
+    }
+
+    public Property(Address address, Integer yearBuilt, Integer squareFootage, User user) {
+        this.address = address;
+        this.yearBuilt = yearBuilt;
+        this.squareFootage = squareFootage;
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }

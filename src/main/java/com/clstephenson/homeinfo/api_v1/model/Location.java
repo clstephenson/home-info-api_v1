@@ -23,6 +23,16 @@ public class Location {
 
     private String notes;
 
+    public Location() {
+    }
+
+    public Location(Property property, String name, String dimensions, String notes) {
+        this.property = property;
+        this.name = name;
+        this.dimensions = dimensions;
+        this.notes = notes;
+    }
+
     public Long getId() {
         return id;
     }

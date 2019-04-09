@@ -28,6 +28,17 @@ public class Material {
 
     private String manufacturer;
 
+    public Material() {
+    }
+
+    public Material(Property property, String name, String description, Location location, String manufacturer) {
+        this.property = property;
+        this.name = name;
+        this.description = description;
+        this.location = location;
+        this.manufacturer = manufacturer;
+    }
+
     public Long getId() {
         return id;
     }

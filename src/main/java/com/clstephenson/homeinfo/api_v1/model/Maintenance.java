@@ -35,6 +35,19 @@ public class Maintenance {
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Vendor vendor;
 
+    public Maintenance() {
+    }
+
+    public Maintenance(Property property, String task, Date lastCompletionDate, Integer frequencyInDays, Boolean isRecurring,
+                       Vendor vendor) {
+        this.property = property;
+        this.task = task;
+        this.lastCompletionDate = lastCompletionDate;
+        this.frequencyInDays = frequencyInDays;
+        this.isRecurring = isRecurring;
+        this.vendor = vendor;
+    }
+
     public Long getId() {
         return id;
     }

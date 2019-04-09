@@ -33,6 +33,18 @@ public class Vendor {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
+    public Vendor() {
+    }
+
+    public Vendor(String name, @Size(max = 10) String phone, @Email String email, @URL String website, String notes, User user) {
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.website = website;
+        this.notes = notes;
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }

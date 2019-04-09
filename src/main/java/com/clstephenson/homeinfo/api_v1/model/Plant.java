@@ -26,6 +26,16 @@ public class Plant {
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Location location;
 
+    public Plant() {
+    }
+
+    public Plant(Property property, String name, String notes, Location location) {
+        this.property = property;
+        this.name = name;
+        this.notes = notes;
+        this.location = location;
+    }
+
     public Long getId() {
         return id;
     }

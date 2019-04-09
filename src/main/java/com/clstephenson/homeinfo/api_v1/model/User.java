@@ -26,6 +26,16 @@ public class User extends AuditModel {
     @Column(name = "disabled")
     private Boolean isDisabled = false;
 
+    public User() {
+    }
+
+    public User(String firstName, String lastName, @Email String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
+
     public Long getId() {
         return id;
     }

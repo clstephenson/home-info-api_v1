@@ -11,12 +11,24 @@ public class StoredFile {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "property_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Property property;
+
     private String path;
+
     private FileCategory category;
+
+    public StoredFile() {
+    }
+
+    public StoredFile(Property property, String path, FileCategory category) {
+        this.property = property;
+        this.path = path;
+        this.category = category;
+    }
 
     public Long getId() {
         return id;

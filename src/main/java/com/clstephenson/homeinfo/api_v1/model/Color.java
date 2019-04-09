@@ -29,6 +29,17 @@ public class Color {
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Location location;
 
+    public Color() {
+    }
+
+    public Color(Property property, String name, String manufacturer, String colorCode, Location location) {
+        this.property = property;
+        this.name = name;
+        this.manufacturer = manufacturer;
+        this.colorCode = colorCode;
+        this.location = location;
+    }
+
     public Long getId() {
         return id;
     }

@@ -21,6 +21,15 @@ public class Window {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Location location;
 
+    public Window() {
+    }
+
+    public Window(String description, String dimensions, Location location) {
+        this.description = description;
+        this.dimensions = dimensions;
+        this.location = location;
+    }
+
     public Long getId() {
         return id;
     }

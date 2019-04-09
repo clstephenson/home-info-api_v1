@@ -21,6 +21,15 @@ public class Idea {
 
     private String notes;
 
+    public Idea() {
+    }
+
+    public Idea(Property property, String description, String notes) {
+        this.property = property;
+        this.description = description;
+        this.notes = notes;
+    }
+
     public Long getId() {
         return id;
     }

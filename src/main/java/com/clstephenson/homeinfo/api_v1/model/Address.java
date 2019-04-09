@@ -1,40 +1,33 @@
 package com.clstephenson.homeinfo.api_v1.model;
 
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Embeddable
 public class Address {
 
-    @NotNull
     @Size(max = 100)
     private String address;
 
-    @NotNull
     @Size(max = 100)
     private String city;
 
-    @NotNull
     @Size(max = 100)
     private String stateOrProvince;
 
-    @NotNull
     @Size(max = 100)
-    private String country;
+    private String country = "United States";
 
-    @NotNull
     @Size(max = 10)
     private String postalCode;
 
     public Address() {
     }
 
-    public Address(String address, String city, String stateOrProvince, String country, String postalCode) {
+    public Address(String address, String city, String stateOrProvince, String postalCode) {
         this.address = address;
         this.city = city;
         this.stateOrProvince = stateOrProvince;
-        this.country = country;
         this.postalCode = postalCode;
     }
 
