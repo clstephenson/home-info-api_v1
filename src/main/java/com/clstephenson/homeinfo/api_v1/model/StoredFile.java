@@ -5,7 +5,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
-@Entity(name = "file")
+@Entity(name = "files")
 public class StoredFile {
 
     @Id

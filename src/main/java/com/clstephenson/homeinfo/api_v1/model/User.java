@@ -3,7 +3,7 @@ package com.clstephenson.homeinfo.api_v1.model;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 
-@Entity
+@Entity(name = "users")
 public class User extends AuditModel {
 
     @Id

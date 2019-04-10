@@ -5,7 +5,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "properties")
 public class Property extends AuditModel {
 
     @Id

@@ -2,13 +2,12 @@ package com.clstephenson.homeinfo.api_v1.model;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
-@Entity
+@Entity(name = "vendors")
 public class Vendor {
 
     @Id
@@ -23,7 +22,6 @@ public class Vendor {
     @Email
     private String email;
 
-    @URL
     private String website;
 
     private String notes;
@@ -36,7 +34,7 @@ public class Vendor {
     public Vendor() {
     }
 
-    public Vendor(String name, @Size(max = 10) String phone, @Email String email, @URL String website, String notes, User user) {
+    public Vendor(String name, @Size(max = 10) String phone, @Email String email, String website, String notes, User user) {
         this.name = name;
         this.phone = phone;
         this.email = email;

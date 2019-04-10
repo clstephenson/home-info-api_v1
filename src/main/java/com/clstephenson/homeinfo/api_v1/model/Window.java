@@ -5,7 +5,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "windows")
 public class Window {
 
     @Id
