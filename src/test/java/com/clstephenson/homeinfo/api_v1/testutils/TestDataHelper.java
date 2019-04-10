@@ -15,6 +15,7 @@ public class TestDataHelper {
 
     public static Property getTestProperty(User user) {
         return new Property(
+                "My House",
                 new Address("123 Main St.", "Scottsdale", "Arizona", "85255"),
                 2000, 1824, user);
     }

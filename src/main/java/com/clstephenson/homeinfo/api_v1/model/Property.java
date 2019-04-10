@@ -12,6 +12,8 @@ public class Property {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
     @Embedded
     @AttributeOverrides(value = {
             @AttributeOverride(name = "stateOrProvince", column = @Column(name = "state_province")),
@@ -33,7 +35,8 @@ public class Property {
     public Property() {
     }
 
-    public Property(Address address, Integer yearBuilt, Integer squareFootage, User user) {
+    public Property(String name, Address address, Integer yearBuilt, Integer squareFootage, User user) {
+        this.name = name;
         this.address = address;
         this.yearBuilt = yearBuilt;
         this.squareFootage = squareFootage;
@@ -46,6 +49,14 @@ public class Property {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Address getAddress() {
