@@ -12,7 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,49 +28,54 @@ public class UserServiceImplTest {
     @MockBean
     private UserRepository userRepository;
 
-    private User user1;
+    private User user;
     private List<User> userList;
+    private long id = 1;
 
     @Before
     public void setUp() {
-        user1 = TestDataHelper.getTestUser();
-        User user2 = TestDataHelper.getTestUser();
-        user2.setEmail("email@example.com");
-        userList = Arrays.asList(user1, user2);
+        user = TestDataHelper.getTestUser();
+        userList = Collections.singletonList(user);
 
-        when(userRepository.findByEmail(user1.getEmail())).thenReturn(Optional.of(user1));
+        when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
         when(userRepository.findAll()).thenReturn(userList);
-        when(userRepository.save(user1)).thenReturn(user1);
+        when(userRepository.save(user)).thenReturn(user);
+        when(userRepository.existsById(id)).thenReturn(true);
         doNothing().when(userRepository).deleteById(anyLong());
     }
 
     @Test
-    public void whenGetAllUsers_thenReturnListWithTwoUsers() {
+    public void whenGetAllUsers_thenReturnListWithOneUser() {
         List<User> found = userService.getAll();
 
-        assertThat(found).size().isEqualTo(2);
+        assertThat(found).size().isEqualTo(1);
     }
 
     @Test
     public void whenValidEmail_thenUserShouldBeFound() {
-        User found = userService.findByEmail(user1.getEmail()).orElse(null);
+        User found = userService.findByEmail(user.getEmail()).orElse(null);
 
         assertThat(found.getEmail())
-                .isEqualTo(user1.getEmail());
+                .isEqualTo(user.getEmail());
     }
 
     @Test
     public void whenUserSaved_thenReturnSavedUser() {
-        User saved = userService.save(user1);
+        User saved = userService.save(user);
 
-        assertThat(saved).isEqualToIgnoringGivenFields(user1, "id");
+        assertThat(saved).isEqualToIgnoringGivenFields(user, "id");
     }
 
     @Test
     public void whenDeleteUser_thenVerifyRepositoryMethodCalled() {
-        userService.deleteById(1L);
+        userService.deleteById(id);
 
         verify(userRepository).deleteById(anyLong());
+    }
+
+    @Test
+    public void whenCheckIfValidUserExists_thenReturnTrue() {
+        assertThat(userService.existsById(id)).isTrue();
     }
 
     @TestConfiguration
