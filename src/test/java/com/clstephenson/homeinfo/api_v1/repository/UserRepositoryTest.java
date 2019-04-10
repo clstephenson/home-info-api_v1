@@ -49,7 +49,7 @@ public class UserRepositoryTest {
         entityManager.persistAndFlush(chris);
 
         // when
-        User found = userRepository.findByEmail(chris.getEmail());
+        User found = userRepository.findByEmail(chris.getEmail()).get();
 
         // then
         assertThat(found.getEmail())
