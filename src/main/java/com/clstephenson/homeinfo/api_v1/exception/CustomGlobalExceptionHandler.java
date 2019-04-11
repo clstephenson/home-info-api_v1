@@ -14,7 +14,9 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     // Let Spring handle the exception, we just override the status code
     @ExceptionHandler({
             UserNotFoundException.class,
-            PropertyNotFoundException.class
+            PropertyNotFoundException.class,
+            VendorNotFoundException.class,
+            TaskNotFoundException.class
     })
     public void springHandleNotFound(HttpServletResponse response) throws IOException {
         response.sendError(HttpStatus.NOT_FOUND.value());

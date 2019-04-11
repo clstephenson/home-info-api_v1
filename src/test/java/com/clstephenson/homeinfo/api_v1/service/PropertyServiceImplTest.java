@@ -50,42 +50,42 @@ public class PropertyServiceImplTest {
     }
 
     @Test
-    public void whenGetAllProperties_thenReturnListWithOneProperty() {
+    public void whenGetAll_thenReturnListWithOneProperty() {
         List<Property> found = service.getAll();
 
         assertThat(found).size().isEqualTo(1);
     }
 
     @Test
-    public void whenGetPropertiesByUserId_thenReturnListWithOneProperty() {
+    public void whenGetByUserId_thenReturnListWithOneProperty() {
         List<Property> found = service.findByUserId(userId);
 
         assertThat(found).size().isEqualTo(1);
     }
 
     @Test
-    public void whenFindPropertyById_thenReturnProperty() {
+    public void whenFindById_thenReturnProperty() {
         Property found = service.findById(propertyId).get();
 
         assertThat(found).isEqualTo(property);
     }
 
     @Test
-    public void whenPropertySaved_thenReturnSavedProperty() {
+    public void whenSaved_thenReturnSavedProperty() {
         Property saved = service.save(property);
 
         assertThat(saved).isEqualToIgnoringGivenFields(property, "id");
     }
 
     @Test
-    public void whenDeleteProperty_thenVerifyRepositoryMethodCalled() {
+    public void whenDelete_thenVerifyRepositoryMethodCalled() {
         service.deleteById(userId);
 
         verify(repository).deleteById(anyLong());
     }
 
     @Test
-    public void whenCheckIfValidPropertyExists_thenReturnTrue() {
+    public void whenCheckIfExists_thenReturnTrue() {
         assertThat(service.existsById(propertyId)).isTrue();
     }
 

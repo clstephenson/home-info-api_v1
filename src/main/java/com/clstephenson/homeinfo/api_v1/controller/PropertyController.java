@@ -12,25 +12,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 public class PropertyController {
 
     @Autowired
     private PropertyService propertyService;
-    
+
     @Autowired
     private UserService userService;
 
     // Find All
     @GetMapping("/property")
-    Iterable<Property> getAllProperties() {
+    List<Property> getAllProperties() {
         return propertyService.getAll();
     }
 
     // Find all properties by user ID
     @GetMapping("/property/user/{userId}")
-    Iterable<Property> getAllPropertiesByUserId(@PathVariable Long userId) {
+    List<Property> getAllPropertiesByUserId(@PathVariable long userId) {
         if (userService.existsById(userId)) {
             return propertyService.findByUserId(userId);
         } else {
@@ -41,22 +42,23 @@ public class PropertyController {
     // Save
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/property/user/{userId}")
-    Property createPropertyWithUserId(@Valid @RequestBody Property newProperty, @PathVariable Long userId) {
-        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+    Property createPropertyWithUserId(@Valid @RequestBody Property newProperty, @PathVariable long userId) {
+        User user = userService.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
         newProperty.setUser(user);
         return propertyService.save(newProperty);
     }
 
     // Find by ID
     @GetMapping("/property/{propertyId}")
-    Property getPropertyById(@PathVariable Long propertyId) {
+    Property getPropertyById(@PathVariable long propertyId) {
         return propertyService.findById(propertyId)
                 .orElseThrow(() -> new PropertyNotFoundException(propertyId));
     }
 
     // Update Property
     @PutMapping("/property/{propertyId}")
-    Property updateProperty(@PathVariable Long propertyId, @Valid @RequestBody Property propertyRequest) {
+    Property updateProperty(@PathVariable long propertyId, @Valid @RequestBody Property propertyRequest) {
         return propertyService.findById(propertyId)
                 .map(property -> {
                     property.setName(propertyRequest.getName());
@@ -69,7 +71,7 @@ public class PropertyController {
     }
 
     @DeleteMapping("/property/{propertyId}")
-    ResponseEntity<?> deleteProperty(@PathVariable Long propertyId) {
+    ResponseEntity<?> deleteProperty(@PathVariable long propertyId) {
         return propertyService.findById(propertyId).map(property -> {
             propertyService.deleteById(propertyId);
             return ResponseEntity.ok().build();
