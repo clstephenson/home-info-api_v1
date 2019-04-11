@@ -14,6 +14,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -30,7 +32,7 @@ public class IdeaRepositoryTest {
 
     @Test
     @Category(IntegrationTest.class)
-    public void whenFindById_thenReturnIdea() {
+    public void whenFindByPropertyId_thenReturnIdeas() {
         // given
         User user = entityManager.persist(TestDataHelper.getTestUser());
         Property property = entityManager.persist(TestDataHelper.getTestProperty(user));
@@ -39,9 +41,9 @@ public class IdeaRepositoryTest {
         entityManager.flush();
 
         // when
-        boolean found = ideaRepository.findById(id).isPresent();
+        List<Idea> found = (List<Idea>) ideaRepository.findAllByPropertyId(property.getId());
 
         // then
-        assertThat(found).isTrue();
+        assertThat(found).size().isGreaterThan(0);
     }
 }
