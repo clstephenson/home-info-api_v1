@@ -1,9 +1,9 @@
 package com.clstephenson.homeinfo.api_v1.controller;
 
-import com.clstephenson.homeinfo.api_v1.model.Idea;
+import com.clstephenson.homeinfo.api_v1.model.Location;
 import com.clstephenson.homeinfo.api_v1.model.Property;
 import com.clstephenson.homeinfo.api_v1.model.User;
-import com.clstephenson.homeinfo.api_v1.service.IdeaService;
+import com.clstephenson.homeinfo.api_v1.service.LocationService;
 import com.clstephenson.homeinfo.api_v1.service.PropertyService;
 import com.clstephenson.homeinfo.api_v1.testutils.TestDataHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,8 +28,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(IdeaController.class)
-public class IdeaControllerTest {
+@WebMvcTest(LocationController.class)
+public class LocationControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -38,14 +38,14 @@ public class IdeaControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private IdeaService ideaService;
+    private LocationService locationService;
 
     @MockBean
     private PropertyService propertyService;
 
     private Property property;
-    private Idea idea;
-    private List<Idea> allIdeas;
+    private Location location;
+    private List<Location> allLocations;
     private long validId = 1;
     private long invalidId = 100;
 
@@ -55,89 +55,89 @@ public class IdeaControllerTest {
         user.setId(validId);
         property = TestDataHelper.getTestProperty(user);
         property.setId(validId);
-        idea = TestDataHelper.getTestIdea(property);
-        idea.setId(validId);
-        allIdeas = Collections.singletonList(idea);
+        location = TestDataHelper.getTestLocation(property);
+        location.setId(validId);
+        allLocations = Collections.singletonList(location);
 
         given(propertyService.existsById(validId)).willReturn(true);
         given(propertyService.existsById(invalidId)).willReturn(false);
         given(propertyService.findById(validId)).willReturn(Optional.of(property));
-        given(ideaService.getAll()).willReturn(allIdeas);
-        given(ideaService.findByPropertyId(validId)).willReturn(allIdeas);
-        given(ideaService.findById(validId)).willReturn(Optional.of(idea));
-        given(ideaService.save(idea)).willReturn(idea);
+        given(locationService.getAll()).willReturn(allLocations);
+        given(locationService.findByPropertyId(validId)).willReturn(allLocations);
+        given(locationService.findById(validId)).willReturn(Optional.of(location));
+        given(locationService.save(location)).willReturn(location);
     }
 
     @Test
     public void whenGetByValidPropertyId_thenReturn200AndJsonArray() throws Exception {
-        mockMvc.perform(get("/idea/property/" + validId))
+        mockMvc.perform(get("/location/property/" + validId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].description", is(idea.getDescription())));
+                .andExpect(jsonPath("$[0].name", is(location.getName())));
     }
 
     @Test
     public void whenGetByInvalidPropertyId_thenReturn404() throws Exception {
-        mockMvc.perform(get("/idea/property/" + invalidId))
+        mockMvc.perform(get("/location/property/" + invalidId))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void whenFindByValidId_thenReturn200AndJson() throws Exception {
-        mockMvc.perform(get("/idea/" + validId))
+        mockMvc.perform(get("/location/" + validId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.description", is(idea.getDescription())));
+                .andExpect(jsonPath("$.name", is(location.getName())));
     }
 
     @Test
     public void whenFindByInvalidId_thenReturn404() throws Exception {
-        mockMvc.perform(get("/idea/" + invalidId))
+        mockMvc.perform(get("/location/" + invalidId))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void whenCreateForValidProperty_theReturn201() throws Exception {
-        mockMvc.perform(post("/idea/property/" + validId)
-                .content(objectMapper.writeValueAsString(idea))
+        mockMvc.perform(post("/location/property/" + validId)
+                .content(objectMapper.writeValueAsString(location))
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isCreated());
     }
 
     @Test
     public void whenCreateForInvalidProperty_theReturn404() throws Exception {
-        mockMvc.perform(post("/idea/property/" + invalidId)
-                .content(objectMapper.writeValueAsString(idea))
+        mockMvc.perform(post("/location/property/" + invalidId)
+                .content(objectMapper.writeValueAsString(location))
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void whenUpdateWithValidId_thenReturn200() throws Exception {
-        mockMvc.perform(put("/idea/" + validId)
-                .content(objectMapper.writeValueAsString(idea))
+        mockMvc.perform(put("/location/" + validId)
+                .content(objectMapper.writeValueAsString(location))
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void whenUpdateWithInvalidId_thenReturn404() throws Exception {
-        mockMvc.perform(put("/idea/" + invalidId)
-                .content(objectMapper.writeValueAsString(idea))
+        mockMvc.perform(put("/location/" + invalidId)
+                .content(objectMapper.writeValueAsString(location))
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void whenDeleteByValidId_thenReturn200() throws Exception {
-        mockMvc.perform(delete("/idea/" + validId))
+        mockMvc.perform(delete("/location/" + validId))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void whenDeleteByInvalidId_thenReturn404() throws Exception {
-        mockMvc.perform(delete("/idea/" + invalidId))
+        mockMvc.perform(delete("/location/" + invalidId))
                 .andExpect(status().isNotFound());
     }
 

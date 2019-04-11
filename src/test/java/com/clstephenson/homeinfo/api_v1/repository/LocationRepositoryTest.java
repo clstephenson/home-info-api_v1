@@ -14,6 +14,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -30,18 +32,18 @@ public class LocationRepositoryTest {
 
     @Test
     @Category(IntegrationTest.class)
-    public void whenFindById_thenReturnLocation() {
+    public void whenFindByPropertyId_thenReturnLocation() {
         // given
         User user = entityManager.persist(TestDataHelper.getTestUser());
         Property property = entityManager.persist(TestDataHelper.getTestProperty(user));
-        Location livingRoom = TestDataHelper.getTestLocation(property);
-        Long id = (Long) entityManager.persistAndGetId(livingRoom);
+        Location location = TestDataHelper.getTestLocation(property);
+        Long id = (Long) entityManager.persistAndGetId(location);
         entityManager.flush();
 
         // when
-        boolean found = locationRepository.findById(id).isPresent();
+        List<Location> found = (List<Location>) locationRepository.findAllByPropertyId(property.getId());
 
         // then
-        assertThat(found).isTrue();
+        assertThat(found).size().isGreaterThan(0);
     }
 }
