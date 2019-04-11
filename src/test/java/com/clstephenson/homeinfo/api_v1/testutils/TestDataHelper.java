@@ -20,10 +20,6 @@ public class TestDataHelper {
                 2000, 1824, user);
     }
 
-    public static Color getTestColor(Property property, Location location) {
-        return new Color(property, "red", "Ben Moore", "C4089", location);
-    }
-
     public static Idea getTestIdea(Property property) {
         return new Idea(property, "Pictures for walls", "some idea notes.");
     }
@@ -38,13 +34,8 @@ public class TestDataHelper {
         return new Task(property, "tree trimming", lastCompleted, 60, true, vendor);
     }
 
-    public static Material getTestMaterial(Property property, Location location) {
-        return new Material(property, "Stone Veneer on Retaining Wall", "Pagosa Springs", location,
-                "Some Brand");
-    }
-
-    public static Plant getTestPlant(Property property, Location location) {
-        return new Plant(property, "Soap Aloe", "Notes about the plant.", location);
+    public static Feature getTestFeature(Property property, Location location) {
+        return new Feature(property, "Soap Aloe", Feature.FeatureType.PLANT, "Notes about the feature", location);
     }
 
     public static StoredFile getTestFile(Property property) {
@@ -54,9 +45,5 @@ public class TestDataHelper {
     public static Vendor getTestVendor(User user) {
         return new Vendor("Heartwood Tree Care", "5555555555", "someemail@example.com", "heartwoodtreecare.com",
                 "some note about the vendor here", user);
-    }
-
-    public static Window getTestWindow(Location location) {
-        return new Window("west wall window", "36 x 42", location);
     }
 }

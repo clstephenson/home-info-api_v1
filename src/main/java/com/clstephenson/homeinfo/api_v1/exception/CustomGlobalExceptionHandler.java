@@ -19,7 +19,8 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
             TaskNotFoundException.class,
             IdeaNotFoundException.class,
             LocationNotFoundException.class,
-            StoredFileNotFoundException.class
+            StoredFileNotFoundException.class,
+            FeatureNotFoundException.class
     })
     public void springHandleNotFound(HttpServletResponse response) throws IOException {
         response.sendError(HttpStatus.NOT_FOUND.value());

@@ -59,7 +59,7 @@ public class LocationServiceImplTest {
     }
 
     @Test
-    public void whenGetByUserId_thenReturnListWithOneLocation() {
+    public void whenGetByPropertyId_thenReturnListWithOneLocation() {
         List<Location> found = service.findByPropertyId(id);
 
         assertThat(found).size().isEqualTo(1);

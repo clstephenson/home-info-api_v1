@@ -5,8 +5,8 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
-@Entity(name = "materials")
-public class Material {
+@Entity(name = "features")
+public class Feature {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,24 +19,24 @@ public class Material {
 
     private String name;
 
-    private String description;
+    private FeatureType type;
+
+    private String notes;
 
     @ManyToOne
     @JoinColumn(name = "location_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Location location;
 
-    private String manufacturer;
-
-    public Material() {
+    public Feature() {
     }
 
-    public Material(Property property, String name, String description, Location location, String manufacturer) {
+    public Feature(Property property, String name, FeatureType type, String notes, Location location) {
         this.property = property;
         this.name = name;
-        this.description = description;
+        this.type = type;
+        this.notes = notes;
         this.location = location;
-        this.manufacturer = manufacturer;
     }
 
     public Long getId() {
@@ -63,12 +63,20 @@ public class Material {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public FeatureType getType() {
+        return type;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setType(FeatureType type) {
+        this.type = type;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public Location getLocation() {
@@ -79,11 +87,12 @@ public class Material {
         this.location = location;
     }
 
-    public String getManufacturer() {
-        return manufacturer;
-    }
-
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
+    public enum FeatureType {
+        MATERIAL,
+        COLOR,
+        PLANT,
+        TREE,
+        WINDOW,
+        OTHER
     }
 }

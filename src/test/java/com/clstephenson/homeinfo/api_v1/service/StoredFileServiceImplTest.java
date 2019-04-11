@@ -59,7 +59,7 @@ public class StoredFileServiceImplTest {
     }
 
     @Test
-    public void whenGetByUserId_thenReturnListWithOneStoredFile() {
+    public void whenGetByPropertyId_thenReturnListWithOneStoredFile() {
         List<StoredFile> found = service.findByPropertyId(id);
 
         assertThat(found).size().isEqualTo(1);

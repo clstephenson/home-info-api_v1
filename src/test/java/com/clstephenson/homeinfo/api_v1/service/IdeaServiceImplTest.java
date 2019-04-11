@@ -59,7 +59,7 @@ public class IdeaServiceImplTest {
     }
 
     @Test
-    public void whenGetByUserId_thenReturnListWithOneIdea() {
+    public void whenGetByPropertyId_thenReturnListWithOneIdea() {
         List<Idea> found = service.findByPropertyId(id);
 
         assertThat(found).size().isEqualTo(1);

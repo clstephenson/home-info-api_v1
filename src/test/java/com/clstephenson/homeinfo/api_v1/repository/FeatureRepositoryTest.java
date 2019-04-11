@@ -1,10 +1,10 @@
 package com.clstephenson.homeinfo.api_v1.repository;
 
 import com.clstephenson.homeinfo.api_v1.IntegrationTest;
+import com.clstephenson.homeinfo.api_v1.model.Feature;
 import com.clstephenson.homeinfo.api_v1.model.Location;
 import com.clstephenson.homeinfo.api_v1.model.Property;
 import com.clstephenson.homeinfo.api_v1.model.User;
-import com.clstephenson.homeinfo.api_v1.model.Window;
 import com.clstephenson.homeinfo.api_v1.testutils.TestDataHelper;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -15,35 +15,55 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @TestPropertySource(
         locations = "classpath:application-integrationtest.properties")
-public class WindowRepositoryTest {
+public class FeatureRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;
 
     @Autowired
-    private WindowRespository windowRespository;
+    private FeatureRepository featureRepository;
 
     @Test
     @Category(IntegrationTest.class)
-    public void whenFindById_thenReturnWindow() {
+    public void whenFindByPropertyId_thenReturnFeatures() {
         // given
         User user = entityManager.persist(TestDataHelper.getTestUser());
         Property property = entityManager.persist(TestDataHelper.getTestProperty(user));
         Location location = entityManager.persist(TestDataHelper.getTestLocation(property));
-        Window window = TestDataHelper.getTestWindow(location);
-        Long id = (Long) entityManager.persistAndGetId(window);
+        Feature feature = TestDataHelper.getTestFeature(property, location);
+        Long id = (Long) entityManager.persistAndGetId(feature);
         entityManager.flush();
 
         // when
-        boolean found = windowRespository.findById(id).isPresent();
+        List<Feature> found = (List<Feature>) featureRepository.findAllByPropertyId(property.getId());
 
         // then
-        assertThat(found).isTrue();
+        assertThat(found).size().isGreaterThan(0);
+    }
+
+    @Test
+    @Category(IntegrationTest.class)
+    public void whenFindByPropertyIdAndLocationId_thenReturnFeatures() {
+        // given
+        User user = entityManager.persist(TestDataHelper.getTestUser());
+        Property property = entityManager.persist(TestDataHelper.getTestProperty(user));
+        Location location = entityManager.persist(TestDataHelper.getTestLocation(property));
+        Feature feature = TestDataHelper.getTestFeature(property, location);
+        Long id = (Long) entityManager.persistAndGetId(feature);
+        entityManager.flush();
+
+        // when
+        List<Feature> found = (List<Feature>) featureRepository.findAllByPropertyIdAndLocationId(property.getId(), location.getId());
+
+        // then
+        assertThat(found).size().isGreaterThan(0);
     }
 }

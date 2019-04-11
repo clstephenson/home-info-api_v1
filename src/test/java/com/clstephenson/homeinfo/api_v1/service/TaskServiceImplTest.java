@@ -61,7 +61,7 @@ public class TaskServiceImplTest {
     }
 
     @Test
-    public void whenGetByUserId_thenReturnListWithOneTask() {
+    public void whenGetByPropertyId_thenReturnListWithOneTask() {
         List<Task> found = service.findByPropertyId(id);
 
         assertThat(found).size().isEqualTo(1);
