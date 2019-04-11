@@ -38,6 +38,7 @@ public class UserServiceImplTest {
         userList = Collections.singletonList(user);
 
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        when(userRepository.findById(id)).thenReturn(Optional.of(user));
         when(userRepository.findAll()).thenReturn(userList);
         when(userRepository.save(user)).thenReturn(user);
         when(userRepository.existsById(id)).thenReturn(true);
@@ -49,6 +50,13 @@ public class UserServiceImplTest {
         List<User> found = userService.getAll();
 
         assertThat(found).size().isEqualTo(1);
+    }
+
+    @Test
+    public void whenGetById_thenReturnUser() {
+        User found = userService.findById(id).orElse(null);
+
+        assertThat(found.getEmail()).isEqualTo(user.getEmail());
     }
 
     @Test
