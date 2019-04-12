@@ -72,19 +72,19 @@ public class StoredFileServiceImplTest {
         assertThat(found).isEqualTo(storedFile);
     }
 
-    @Test
-    public void whenSaved_thenReturnSavedStoredFile() {
-        StoredFile saved = service.save(storedFile);
-
-        assertThat(saved).isEqualToIgnoringGivenFields(storedFile, "id");
-    }
-
-    @Test
-    public void whenDelete_thenVerifyRepositoryMethodCalled() {
-        service.deleteById(id);
-
-        verify(repository).deleteById(anyLong());
-    }
+//    @Test
+//    public void whenSaved_thenReturnSavedStoredFile() {
+//        StoredFile saved = service.save(storedFile);
+//
+//        assertThat(saved).isEqualToIgnoringGivenFields(storedFile, "id");
+//    }
+//
+//    @Test
+//    public void whenDelete_thenVerifyRepositoryMethodCalled() {
+//        service.deleteById(id);
+//
+//        verify(repository).deleteById(anyLong());
+//    }
 
     @Test
     public void whenCheckIfExists_thenReturnTrue() {

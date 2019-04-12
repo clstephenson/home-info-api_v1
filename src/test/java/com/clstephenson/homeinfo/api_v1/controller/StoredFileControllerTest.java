@@ -64,7 +64,7 @@ public class StoredFileControllerTest {
         given(storedFileService.getAll()).willReturn(allStoredFiles);
         given(storedFileService.findByPropertyId(validId)).willReturn(allStoredFiles);
         given(storedFileService.findById(validId)).willReturn(Optional.of(storedFile));
-        given(storedFileService.save(storedFile)).willReturn(storedFile);
+//        given(storedFileService.save(storedFile)).willReturn(storedFile);
     }
 
     @Test
@@ -72,7 +72,7 @@ public class StoredFileControllerTest {
         mockMvc.perform(get("/storedFile/property/" + validId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].path", is(storedFile.getPath())));
+                .andExpect(jsonPath("$[0].path", is(storedFile.getUuid())));
     }
 
     @Test

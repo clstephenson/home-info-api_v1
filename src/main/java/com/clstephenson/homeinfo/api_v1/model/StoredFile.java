@@ -17,16 +17,24 @@ public class StoredFile extends AuditModel {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Property property;
 
-    private String path;
+    @Column(name = "original_file_name")
+    private String originalFileName;
+
+    private String uuid;
+
+    @Column(name = "content_type")
+    private String contentType;
 
     private FileCategory category;
 
     public StoredFile() {
     }
 
-    public StoredFile(Property property, String path, FileCategory category) {
+    public StoredFile(Property property, String originalFileName, String uuid, String contentType, FileCategory category) {
         this.property = property;
-        this.path = path;
+        this.originalFileName = originalFileName;
+        this.uuid = uuid;
+        this.contentType = contentType;
         this.category = category;
     }
 
@@ -46,12 +54,28 @@ public class StoredFile extends AuditModel {
         this.property = property;
     }
 
-    public String getPath() {
-        return path;
+    public String getOriginalFileName() {
+        return originalFileName;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setOriginalFileName(String originalFileName) {
+        this.originalFileName = originalFileName;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 
     public FileCategory getCategory() {

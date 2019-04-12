@@ -1,6 +1,8 @@
 package com.clstephenson.homeinfo.api_v1.service;
 
 import com.clstephenson.homeinfo.api_v1.model.StoredFile;
+import com.clstephenson.homeinfo.api_v1.model.UploadFileResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,9 +14,9 @@ public interface StoredFileService {
 
     Optional<StoredFile> findById(long id);
 
-    StoredFile save(StoredFile storedFile);
+    UploadFileResponse save(StoredFile storedFile, MultipartFile file);
 
-    void deleteById(long id);
+    boolean delete(StoredFile storedFile);
 
     boolean existsById(long id);
 }

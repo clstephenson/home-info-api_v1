@@ -39,7 +39,8 @@ public class TestDataHelper {
     }
 
     public static StoredFile getTestFile(Property property) {
-        return new StoredFile(property, "some file path", StoredFile.FileCategory.DOCUMENT);
+        return new StoredFile(property, "somefile.jpg", "lsad-3333345-dfsfrd-fdsf3",
+                "image/jpeg", StoredFile.FileCategory.DOCUMENT);
     }
 
     public static Vendor getTestVendor(User user) {
