@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity(name = "tasks")
-public class Task {
+public class Task extends AuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

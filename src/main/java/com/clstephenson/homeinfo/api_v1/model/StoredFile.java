@@ -6,7 +6,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 
 @Entity(name = "files")
-public class StoredFile {
+public class StoredFile extends AuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

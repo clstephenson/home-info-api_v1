@@ -3,12 +3,14 @@ package com.clstephenson.homeinfo.api_v1.service;
 import com.clstephenson.homeinfo.api_v1.model.Location;
 import com.clstephenson.homeinfo.api_v1.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+@Service
 public class LocationServiceImpl implements LocationService {
 
     @Autowired

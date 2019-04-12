@@ -8,7 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
 @Entity(name = "vendors")
-public class Vendor {
+public class Vendor extends AuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

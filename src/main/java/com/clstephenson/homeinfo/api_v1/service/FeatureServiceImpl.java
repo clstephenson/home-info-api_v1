@@ -3,12 +3,14 @@ package com.clstephenson.homeinfo.api_v1.service;
 import com.clstephenson.homeinfo.api_v1.model.Feature;
 import com.clstephenson.homeinfo.api_v1.repository.FeatureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+@Service
 public class FeatureServiceImpl implements FeatureService {
 
     @Autowired

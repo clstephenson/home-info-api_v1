@@ -6,7 +6,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 
 @Entity(name = "properties")
-public class Property {
+public class Property extends AuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
