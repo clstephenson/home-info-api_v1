@@ -5,6 +5,7 @@ import com.clstephenson.homeinfo.api_v1.exception.FileStorageException;
 import com.clstephenson.homeinfo.api_v1.exception.StoredFileNotFoundException;
 import com.clstephenson.homeinfo.api_v1.model.UploadFileResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-@Service
+@Primary
+@Service("LocalFileStorageService")
 public class LocalFileStorageService implements FileStorageService {
 
     private final Path fileStorageLocation;
