@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.springframework.context.annotation.FilterType.ASSIGNABLE_TYPE;
@@ -16,8 +16,7 @@ import static org.springframework.context.annotation.FilterType.ASSIGNABLE_TYPE;
         type = ASSIGNABLE_TYPE,
         classes = {AuditorAwareImpl.class, JpaAuditingConfig.class}
 ))
-@TestPropertySource(
-        locations = "classpath:application-integrationtest.properties")
+@ActiveProfiles("test")
 public class JpaDataTest implements IntegrationTest {
     @Test
     public void dummyTest() {
