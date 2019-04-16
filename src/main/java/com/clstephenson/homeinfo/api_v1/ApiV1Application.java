@@ -1,5 +1,6 @@
 package com.clstephenson.homeinfo.api_v1;
 
+import com.clstephenson.homeinfo.api_v1.configproperty.AwsProperties;
 import com.clstephenson.homeinfo.api_v1.configproperty.FileStorageProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,7 +8,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 
 @SpringBootApplication
 @EnableConfigurationProperties({
-        FileStorageProperties.class
+        FileStorageProperties.class,
+        AwsProperties.class
 })
 public class ApiV1Application {
 

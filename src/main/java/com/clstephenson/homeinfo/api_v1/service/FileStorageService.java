@@ -6,9 +6,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FileStorageService {
 
-    UploadFileResponse storeFile(MultipartFile file, String path);
+    UploadFileResponse storeFile(MultipartFile file, String targetFileName, String targetFolderName);
 
-    Resource loadFileAsResource(String uuid);
+    Resource loadFileAsResource(String sourceFileName, String sourceFolderName);
 
-    boolean deleteFileFromStorage(String uuid);
+    boolean deleteFileFromStorage(String targetFileName, String targetFolderName);
 }

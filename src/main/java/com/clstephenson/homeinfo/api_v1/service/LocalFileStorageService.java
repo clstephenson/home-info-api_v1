@@ -5,7 +5,7 @@ import com.clstephenson.homeinfo.api_v1.exception.FileStorageException;
 import com.clstephenson.homeinfo.api_v1.exception.StoredFileNotFoundException;
 import com.clstephenson.homeinfo.api_v1.model.UploadFileResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-@Primary
+@Profile("localstore")
 @Service("LocalFileStorageService")
 public class LocalFileStorageService implements FileStorageService {
 
@@ -39,7 +39,7 @@ public class LocalFileStorageService implements FileStorageService {
     }
 
     @Override
-    public UploadFileResponse storeFile(MultipartFile file, String uuid) {
+    public UploadFileResponse storeFile(MultipartFile file, String targetFileName, String targetFolderName) {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
@@ -50,39 +50,39 @@ public class LocalFileStorageService implements FileStorageService {
             }
 
             // copy file to the target location (replaces existing file with same name)
-            Path targetLocation = this.fileStorageLocation.resolve(uuid);
+            Path targetLocation = this.fileStorageLocation.resolve(targetFileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-            return new UploadFileResponse(fileName, uuid, file.getContentType(), file.getSize());
+            return new UploadFileResponse(fileName, targetFileName, file.getContentType(), file.getSize());
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file" + fileName + ". Please try again!", ex);
         }
     }
 
     @Override
-    public Resource loadFileAsResource(String uuid) {
+    public Resource loadFileAsResource(String sourceFileName, String sourceFolderName) {
         try {
-            Path uuidPath = this.fileStorageLocation.resolve(uuid).normalize();
+            Path uuidPath = this.fileStorageLocation.resolve(sourceFileName).normalize();
 
             Resource resource = new UrlResource(uuidPath.toUri());
             if (resource.exists()) {
                 return resource;
             } else {
-                throw new StoredFileNotFoundException("File not found " + uuid);
+                throw new StoredFileNotFoundException("File not found " + sourceFileName);
             }
         } catch (MalformedURLException ex) {
-            throw new StoredFileNotFoundException("File not found " + uuid, ex);
+            throw new StoredFileNotFoundException("File not found " + sourceFileName, ex);
         }
     }
 
     @Override
-    public boolean deleteFileFromStorage(String uuid) {
+    public boolean deleteFileFromStorage(String targetFileName, String targetFolderName) {
         try {
-            Path uuidPath = this.fileStorageLocation.resolve(uuid).normalize();
+            Path uuidPath = this.fileStorageLocation.resolve(targetFileName).normalize();
             Files.delete(uuidPath);
             return true;
         } catch (IOException ex) {
-            throw new StoredFileNotFoundException("File could not be deleted " + uuid, ex);
+            throw new StoredFileNotFoundException("File could not be deleted " + targetFileName, ex);
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.clstephenson.homeinfo.api_v1.controller;
 
+import com.clstephenson.homeinfo.api_v1.configproperty.AwsProperties;
 import com.clstephenson.homeinfo.api_v1.exception.PropertyNotFoundException;
 import com.clstephenson.homeinfo.api_v1.exception.StoredFileNotFoundException;
 import com.clstephenson.homeinfo.api_v1.model.StoredFile;
@@ -32,6 +33,9 @@ public class StoredFileController {
     @Autowired
     FileStorageService fileStorageService;
 
+    @Autowired
+    AwsProperties awsProperties;
+
     @GetMapping("/property/{propertyId}/storedFile")
     public List<StoredFile> getStoredFilesByPropertyId(@PathVariable long propertyId) {
         if (propertyService.existsById(propertyId)) {
@@ -58,8 +62,9 @@ public class StoredFileController {
         StoredFile storedFile = storedFileService.findById(fileId)
                 .orElseThrow(() -> new StoredFileNotFoundException(fileId));
 
+        String userUuid = storedFile.getProperty().getUser().getUuid();
         // Load file as Resource
-        Resource resource = fileStorageService.loadFileAsResource(storedFile.getUuid());
+        Resource resource = fileStorageService.loadFileAsResource(storedFile.getUuid(), userUuid);
 
         // Try to determine file's content type
         String contentType = null;

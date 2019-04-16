@@ -44,14 +44,16 @@ public class StoredFileServiceImpl implements StoredFileService {
         if (storedFile.getUuid() == null || storedFile.getUuid().isEmpty()) {
             storedFile.setUuid(UUID.randomUUID().toString());
         }
-        UploadFileResponse response = fileStorageService.storeFile(file, storedFile.getUuid());
+        String userUuid = storedFile.getProperty().getUser().getUuid();
+        UploadFileResponse response = fileStorageService.storeFile(file, storedFile.getUuid(), userUuid);
         storedFileRepository.save(storedFile);
         return response;
     }
 
     @Override
     public boolean delete(StoredFile storedFile) {
-        if (fileStorageService.deleteFileFromStorage(storedFile.getUuid())) {
+        String userUuid = storedFile.getProperty().getUser().getUuid();
+        if (fileStorageService.deleteFileFromStorage(storedFile.getUuid(), userUuid)) {
             storedFileRepository.deleteById(storedFile.getId());
             return true;
         } else {
