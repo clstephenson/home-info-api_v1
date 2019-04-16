@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -34,6 +35,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
+        if (user.getUuid() == null || user.getUuid().isEmpty()) {
+            user.setUuid(UUID.randomUUID().toString());
+        }
         return userRepository.save(user);
     }
 
