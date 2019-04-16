@@ -12,6 +12,8 @@ import com.clstephenson.homeinfo.api_v1.configproperty.AwsProperties;
 import com.clstephenson.homeinfo.api_v1.exception.FileStorageException;
 import com.clstephenson.homeinfo.api_v1.exception.StoredFileNotFoundException;
 import com.clstephenson.homeinfo.api_v1.model.UploadFileResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.InputStreamResource;
@@ -20,12 +22,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 @Profile("s3store")
 @Service("AwsS3FileStorageService")
 public class AwsS3FileStorageService implements FileStorageService {
 
+    Logger logger = LoggerFactory.getLogger(AwsS3FileStorageService.class);
     private final String BUCKET_NAME;
     private AmazonS3 s3Client;
 
@@ -53,22 +54,25 @@ public class AwsS3FileStorageService implements FileStorageService {
         try {
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
-            s3Client.putObject(
-                    BUCKET_NAME,
-                    getS3Key(targetFolderName, targetFileName),
-                    file.getInputStream(),
-                    metadata);
+            metadata.setContentLength(file.getSize());
+
+            String s3Key = getS3Key(targetFolderName, targetFileName);
+            s3Client.putObject(BUCKET_NAME, s3Key, file.getInputStream(), metadata);
+
+            logger.info(String.format("Uploaded [%s] to S3 bucket [%s]", s3Key, BUCKET_NAME));
             return new UploadFileResponse(fileName, targetFileName, file.getContentType(), file.getSize());
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             throw new FileStorageException("Could not store file" + fileName + ". Please try again!", ex);
         }
     }
 
     @Override
     public Resource loadFileAsResource(String sourceFileName, String sourceFolderName) {
-        S3Object s3Object = s3Client.getObject(BUCKET_NAME, getS3Key(sourceFolderName, sourceFileName));
+        String s3Key = getS3Key(sourceFolderName, sourceFileName);
+        S3Object s3Object = s3Client.getObject(BUCKET_NAME, s3Key);
         Resource resource = new InputStreamResource(s3Object.getObjectContent());
         if (resource.exists()) {
+            logger.info(String.format("Downloaded File [%s] from S3 bucket [%s]", s3Key, BUCKET_NAME));
             return resource;
         } else {
             throw new StoredFileNotFoundException("File not found " + sourceFileName);
@@ -81,7 +85,12 @@ public class AwsS3FileStorageService implements FileStorageService {
         if (s3Client.doesObjectExist(BUCKET_NAME, s3Key)) {
             try {
                 s3Client.deleteObject(BUCKET_NAME, s3Key);
-                return !s3Client.doesObjectExist(BUCKET_NAME, s3Key);
+                if (s3Client.doesObjectExist(BUCKET_NAME, s3Key)) {
+                    return false;
+                } else {
+                    logger.info(String.format("Deleted [%s] from S3 bucket [%s]", s3Key, BUCKET_NAME));
+                    return true;
+                }
             } catch (SdkClientException e) {
                 throw new FileStorageException("File could not be deleted " + s3Key, e);
             }
