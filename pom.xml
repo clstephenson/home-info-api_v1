@@ -9,9 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.clstephenson.homeinfo</groupId>
-    <artifactId>api_v1</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>api_v1</name>
+    <artifactId>home-project-api_v1</artifactId>
+    <packaging>jar</packaging>
+    <version>0.0.1</version>
+    <name>home-project-api_v1</name>
     <description>Version 1 of web service for home information system</description>
 
     <properties>
@@ -63,21 +64,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
-
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-devtools</artifactId>-->
-        <!--<scope>runtime</scope>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.cloud</groupId>-->
-        <!--<artifactId>spring-cloud-starter-aws</artifactId>-->
-        <!--<version>2.1.1.RELEASE</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.cloud</groupId>-->
-        <!--<artifactId>spring-cloud-aws-jdbc</artifactId>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-aws-context</artifactId>

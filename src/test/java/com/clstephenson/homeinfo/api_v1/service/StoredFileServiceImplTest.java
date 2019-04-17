@@ -30,6 +30,8 @@ public class StoredFileServiceImplTest {
     private StoredFileService service;
     @MockBean
     private StoredFileRepository repository;
+    @MockBean
+    private FileStorageService fileStorageService;
     private StoredFile storedFile;
     private List<StoredFile> storedFileList;
 

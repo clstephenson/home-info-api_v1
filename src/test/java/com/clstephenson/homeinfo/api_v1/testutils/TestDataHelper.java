@@ -6,11 +6,14 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.UUID;
 
 public class TestDataHelper {
 
     public static User getTestUser() {
-        return new User("Chris", "Stephenson", "clstephenson@gmail.com", "password");
+        User user = new User("Chris", "Stephenson", "clstephenson@gmail.com", "password");
+        user.setUuid(UUID.randomUUID().toString());
+        return user;
     }
 
     public static Property getTestProperty(User user) {

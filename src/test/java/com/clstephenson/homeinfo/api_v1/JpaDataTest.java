@@ -16,7 +16,7 @@ import static org.springframework.context.annotation.FilterType.ASSIGNABLE_TYPE;
         type = ASSIGNABLE_TYPE,
         classes = {AuditorAwareImpl.class, JpaAuditingConfig.class}
 ))
-@ActiveProfiles("test")
+@ActiveProfiles({"test"})
 public class JpaDataTest implements IntegrationTest {
     @Test
     public void dummyTest() {
