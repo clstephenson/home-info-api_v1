@@ -1,6 +1,8 @@
 ### SECURE APPLICATION FILES ###
 application-*.properties
 
+/logs/
+
 HELP.md
 /target/
 !.mvn/wrapper/maven-wrapper.jar
