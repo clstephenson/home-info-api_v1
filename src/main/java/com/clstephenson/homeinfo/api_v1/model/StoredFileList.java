@@ -6,21 +6,21 @@ import java.util.List;
 
 public class StoredFileList implements Serializable {
 
-    private List<StoredFile> properties;
+    private List<StoredFile> storedFiles;
 
     public StoredFileList() {
-        properties = new ArrayList<>();
+        storedFiles = new ArrayList<>();
     }
 
-    public StoredFileList(List<StoredFile> properties) {
-        this.properties = properties;
+    public StoredFileList(List<StoredFile> storedFiles) {
+        this.storedFiles = storedFiles;
     }
 
-    public List<StoredFile> getProperties() {
-        return properties;
+    public List<StoredFile> getStoredFiles() {
+        return storedFiles;
     }
 
-    public void setProperties(List<StoredFile> properties) {
-        this.properties = properties;
+    public void setStoredFiles(List<StoredFile> storedFiles) {
+        this.storedFiles = storedFiles;
     }
 }

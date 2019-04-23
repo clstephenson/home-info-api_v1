@@ -6,21 +6,21 @@ import java.util.List;
 
 public class TaskList implements Serializable {
 
-    private List<Task> properties;
+    private List<Task> tasks;
 
     public TaskList() {
-        properties = new ArrayList<>();
+        tasks = new ArrayList<>();
     }
 
-    public TaskList(List<Task> properties) {
-        this.properties = properties;
+    public TaskList(List<Task> tasks) {
+        this.tasks = tasks;
     }
 
-    public List<Task> getProperties() {
-        return properties;
+    public List<Task> getTasks() {
+        return tasks;
     }
 
-    public void setProperties(List<Task> properties) {
-        this.properties = properties;
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 }

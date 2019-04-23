@@ -6,21 +6,21 @@ import java.util.List;
 
 public class UserList implements Serializable {
 
-    private List<User> properties;
+    private List<User> users;
 
     public UserList() {
-        properties = new ArrayList<>();
+        users = new ArrayList<>();
     }
 
-    public UserList(List<User> properties) {
-        this.properties = properties;
+    public UserList(List<User> users) {
+        this.users = users;
     }
 
-    public List<User> getProperties() {
-        return properties;
+    public List<User> getUsers() {
+        return users;
     }
 
-    public void setProperties(List<User> properties) {
-        this.properties = properties;
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }
