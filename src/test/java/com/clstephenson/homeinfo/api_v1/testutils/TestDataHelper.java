@@ -38,12 +38,12 @@ public class TestDataHelper {
     }
 
     public static Feature getTestFeature(Property property, Location location) {
-        return new Feature(property, "Soap Aloe", Feature.FeatureType.PLANT, "Notes about the feature", location);
+        return new Feature(property, "Soap Aloe", FeatureType.PLANT, "Notes about the feature", location);
     }
 
     public static StoredFile getTestFile(Property property) {
         return new StoredFile(property, "somefile.jpg", "lsad-3333345-dfsfrd-fdsf3",
-                "image/jpeg", StoredFile.FileCategory.DOCUMENT);
+                "image/jpeg", StoredFile.FileCategory.FEATURE, 1L);
     }
 
     public static Vendor getTestVendor(User user) {

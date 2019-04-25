@@ -3,6 +3,7 @@ package com.clstephenson.homeinfo.api_v1.service;
 import com.clstephenson.homeinfo.api_v1.configproperty.FileStorageProperties;
 import com.clstephenson.homeinfo.api_v1.exception.FileStorageException;
 import com.clstephenson.homeinfo.api_v1.exception.StoredFileNotFoundException;
+import com.clstephenson.homeinfo.api_v1.logging.MyLogger;
 import com.clstephenson.homeinfo.api_v1.model.UploadFileResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -23,6 +24,7 @@ import java.nio.file.StandardCopyOption;
 @Service("LocalFileStorageService")
 public class LocalFileStorageService implements FileStorageService {
 
+    private final MyLogger LOGGER = new MyLogger(LocalFileStorageService.class);
     private final Path fileStorageLocation;
 
     @Autowired
@@ -33,8 +35,8 @@ public class LocalFileStorageService implements FileStorageService {
         try {
             Files.createDirectories(this.fileStorageLocation);
         } catch (Exception ex) {
-            throw new FileStorageException(
-                    "Could not create the directory where the uploaded files will be stored.", ex);
+            final String message = String.format("Could not create local directory for uploads: %s", fileStorageLocation);
+            throw new FileStorageException(message, ex);
         }
     }
 
@@ -46,7 +48,8 @@ public class LocalFileStorageService implements FileStorageService {
         try {
             // Security check
             if (fileName.contains("..")) {
-                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+                final String message = String.format("Filename contains invalid path sequence: %s", fileName);
+                throw new FileStorageException(message);
             }
 
             // copy file to the target location (replaces existing file with same name)
@@ -55,7 +58,8 @@ public class LocalFileStorageService implements FileStorageService {
 
             return new UploadFileResponse(fileName, targetFileName, file.getContentType(), file.getSize());
         } catch (IOException ex) {
-            throw new FileStorageException("Could not store file" + fileName + ". Please try again!", ex);
+            final String message = String.format("Could not store file '%s' with target filename '%s", fileName, targetFileName);
+            throw new FileStorageException(message, ex);
         }
     }
 
@@ -82,7 +86,8 @@ public class LocalFileStorageService implements FileStorageService {
             Files.delete(uuidPath);
             return true;
         } catch (IOException ex) {
-            throw new StoredFileNotFoundException("File could not be deleted " + targetFileName, ex);
+            final String message = String.format("File could not be deleted '%s'", targetFileName);
+            throw new StoredFileNotFoundException(message, ex);
         }
     }
 }

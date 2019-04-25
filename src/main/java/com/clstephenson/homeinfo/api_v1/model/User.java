@@ -1,5 +1,7 @@
 package com.clstephenson.homeinfo.api_v1.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 
@@ -7,7 +9,13 @@ import javax.validation.constraints.Email;
 public class User extends AuditModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(
+            strategy = GenerationType.AUTO,
+            generator = "native")
+    @GenericGenerator(
+            name = "native",
+            strategy = "native"
+    )
     private Long id;
 
     @Column(unique = true, nullable = false)

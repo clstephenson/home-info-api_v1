@@ -12,11 +12,15 @@ public interface StoredFileService {
 
     List<StoredFile> findByPropertyId(long propertyId);
 
+    List<StoredFile> findByCategoryAndCategoryItemId(StoredFile.FileCategory category, long categoryItemId);
+
     Optional<StoredFile> findById(long id);
 
     UploadFileResponse save(StoredFile storedFile, MultipartFile file);
 
     boolean delete(StoredFile storedFile);
+
+    boolean deleteAllByCategoryAndCategoryItemId(StoredFile.FileCategory category, long categoryItemId);
 
     boolean existsById(long id);
 }

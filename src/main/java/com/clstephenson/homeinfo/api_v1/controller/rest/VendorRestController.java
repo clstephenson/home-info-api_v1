@@ -1,9 +1,10 @@
-package com.clstephenson.homeinfo.api_v1.controller;
+package com.clstephenson.homeinfo.api_v1.controller.rest;
 
 import com.clstephenson.homeinfo.api_v1.exception.UserNotFoundException;
 import com.clstephenson.homeinfo.api_v1.exception.VendorNotFoundException;
 import com.clstephenson.homeinfo.api_v1.model.User;
 import com.clstephenson.homeinfo.api_v1.model.Vendor;
+import com.clstephenson.homeinfo.api_v1.model.VendorList;
 import com.clstephenson.homeinfo.api_v1.service.UserService;
 import com.clstephenson.homeinfo.api_v1.service.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
-public class VendorController {
+public class VendorRestController {
 
     @Autowired
     private UserService userService;
@@ -23,30 +23,38 @@ public class VendorController {
     @Autowired
     private VendorService vendorService;
 
-    @GetMapping("/vendor/user/{userId}")
-    List<Vendor> getAllVendorsByUserId(@PathVariable Long userId) {
+    @GetMapping("/apiv1/user/{userId}/vendors")
+    ResponseEntity<VendorList> getAllVendorsByUserId(@PathVariable Long userId) {
         if (userService.existsById(userId)) {
-            return vendorService.findByUserId(userId);
+            VendorList vendorList = new VendorList();
+            vendorService.findByUserId(userId).forEach(vendor -> vendorList.getVendors().add(vendor));
+            return ResponseEntity.ok()
+                    .header("Content-Type", "application/json; charset=utf-8")
+                    .body(vendorList);
         } else {
             throw new UserNotFoundException(userId);
         }
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/vendor/user/{userId}")
+    @PostMapping("/apiv1/user/{userId}/vendor")
     Vendor createVendorWithUserId(@Valid @RequestBody Vendor newVendor, @PathVariable Long userId) {
         User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         newVendor.setUser(user);
         return vendorService.save(newVendor);
     }
 
-    @GetMapping("/vendor/{vendorId}")
-    Vendor getPropertyById(@PathVariable Long vendorId) {
-        return vendorService.findById(vendorId)
+    @GetMapping("/apiv1/vendor/{vendorId}")
+    ResponseEntity<Vendor> getVendorById(@PathVariable Long vendorId) {
+        Vendor vendor = vendorService.findById(vendorId)
                 .orElseThrow(() -> new VendorNotFoundException(vendorId));
+
+        return ResponseEntity.ok()
+                .header("Content-Type", "application/json; charset=utf-8")
+                .body(vendor);
     }
 
-    @PutMapping("/vendor/{vendorId}")
+    @PutMapping("/apiv1/vendor/{vendorId}")
     Vendor updateVendor(@PathVariable Long vendorId, @Valid @RequestBody Vendor vendorRequest) {
         return vendorService.findById(vendorId)
                 .map(vendor -> {
@@ -60,7 +68,7 @@ public class VendorController {
                 }).orElseThrow(() -> new VendorNotFoundException(vendorId));
     }
 
-    @DeleteMapping("/vendor/{vendorId}")
+    @DeleteMapping("/apiv1/vendor/{vendorId}")
     ResponseEntity<?> deleteVendor(@PathVariable Long vendorId) {
         return vendorService.findById(vendorId).map(vendor -> {
             vendorService.deleteById(vendorId);

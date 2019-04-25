@@ -1,5 +1,6 @@
 package com.clstephenson.homeinfo.api_v1.model;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -9,7 +10,13 @@ import javax.persistence.*;
 public class Feature extends AuditModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(
+            strategy = GenerationType.AUTO,
+            generator = "native")
+    @GenericGenerator(
+            name = "native",
+            strategy = "native"
+    )
     private Long id;
 
     @ManyToOne(optional = false)
@@ -19,7 +26,8 @@ public class Feature extends AuditModel {
 
     private String name;
 
-    private FeatureType type;
+    @Enumerated(value = EnumType.STRING)
+    private FeatureType type = FeatureType.OTHER;
 
     private String notes;
 
@@ -87,12 +95,4 @@ public class Feature extends AuditModel {
         this.location = location;
     }
 
-    public enum FeatureType {
-        MATERIAL,
-        COLOR,
-        PLANT,
-        TREE,
-        WINDOW,
-        OTHER
-    }
 }

@@ -11,9 +11,8 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.clstephenson.homeinfo.api_v1.configproperty.AwsProperties;
 import com.clstephenson.homeinfo.api_v1.exception.FileStorageException;
 import com.clstephenson.homeinfo.api_v1.exception.StoredFileNotFoundException;
+import com.clstephenson.homeinfo.api_v1.logging.MyLogger;
 import com.clstephenson.homeinfo.api_v1.model.UploadFileResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.InputStreamResource;
@@ -26,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service("AwsS3FileStorageService")
 public class AwsS3FileStorageService implements FileStorageService {
 
-    Logger logger = LoggerFactory.getLogger(AwsS3FileStorageService.class);
+    private final MyLogger LOGGER = new MyLogger(AwsS3FileStorageService.class);
     private final String BUCKET_NAME;
     private AmazonS3 s3Client;
 
@@ -49,7 +48,8 @@ public class AwsS3FileStorageService implements FileStorageService {
 
         // Security check
         if (fileName.contains("..")) {
-            throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+            final String message = String.format("Filename contains invalid path sequence: %s", fileName);
+            throw new FileStorageException(message);
         }
         try {
             ObjectMetadata metadata = new ObjectMetadata();
@@ -59,10 +59,11 @@ public class AwsS3FileStorageService implements FileStorageService {
             String s3Key = getS3Key(targetFolderName, targetFileName);
             s3Client.putObject(BUCKET_NAME, s3Key, file.getInputStream(), metadata);
 
-            logger.info(String.format("Uploaded [%s] to S3 bucket [%s]", s3Key, BUCKET_NAME));
+            LOGGER.info(String.format("Uploaded [%s] to S3 bucket [%s]", s3Key, BUCKET_NAME));
             return new UploadFileResponse(fileName, targetFileName, file.getContentType(), file.getSize());
         } catch (Exception ex) {
-            throw new FileStorageException("Could not store file" + fileName + ". Please try again!", ex);
+            final String message = String.format("Could not store file '%s' with target filename '%s", fileName, targetFileName);
+            throw new FileStorageException(message, ex);
         }
     }
 
@@ -72,10 +73,11 @@ public class AwsS3FileStorageService implements FileStorageService {
         S3Object s3Object = s3Client.getObject(BUCKET_NAME, s3Key);
         Resource resource = new InputStreamResource(s3Object.getObjectContent());
         if (resource.exists()) {
-            logger.info(String.format("Downloaded File [%s] from S3 bucket [%s]", s3Key, BUCKET_NAME));
+            LOGGER.info(String.format("Downloaded File [%s] from S3 bucket [%s]", s3Key, BUCKET_NAME));
             return resource;
         } else {
-            throw new StoredFileNotFoundException("File not found " + sourceFileName);
+            final String message = String.format("Could not find File [%s] in S3 bucket [%s]", s3Key, BUCKET_NAME);
+            throw new StoredFileNotFoundException(message);
         }
     }
 
@@ -88,7 +90,7 @@ public class AwsS3FileStorageService implements FileStorageService {
                 if (s3Client.doesObjectExist(BUCKET_NAME, s3Key)) {
                     return false;
                 } else {
-                    logger.info(String.format("Deleted [%s] from S3 bucket [%s]", s3Key, BUCKET_NAME));
+                    LOGGER.info(String.format("Deleted [%s] from S3 bucket [%s]", s3Key, BUCKET_NAME));
                     return true;
                 }
             } catch (SdkClientException e) {

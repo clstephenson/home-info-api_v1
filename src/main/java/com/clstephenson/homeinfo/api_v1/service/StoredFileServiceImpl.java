@@ -1,5 +1,6 @@
 package com.clstephenson.homeinfo.api_v1.service;
 
+import com.clstephenson.homeinfo.api_v1.logging.MyLogger;
 import com.clstephenson.homeinfo.api_v1.model.StoredFile;
 import com.clstephenson.homeinfo.api_v1.model.UploadFileResponse;
 import com.clstephenson.homeinfo.api_v1.repository.StoredFileRepository;
@@ -16,6 +17,8 @@ import java.util.stream.StreamSupport;
 @Service
 public class StoredFileServiceImpl implements StoredFileService {
 
+    private final MyLogger LOGGER = new MyLogger(StoredFileServiceImpl.class);
+
     @Autowired
     StoredFileRepository storedFileRepository;
 
@@ -31,6 +34,13 @@ public class StoredFileServiceImpl implements StoredFileService {
     @Override
     public List<StoredFile> findByPropertyId(long propertyId) {
         return StreamSupport.stream(storedFileRepository.findAllByPropertyId(propertyId).spliterator(), false)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<StoredFile> findByCategoryAndCategoryItemId(StoredFile.FileCategory category, long categoryItemId) {
+        return StreamSupport.stream(storedFileRepository.findAllByCategoryAndCategoryItemId(category, categoryItemId)
+                .spliterator(), false)
                 .collect(Collectors.toList());
     }
 
@@ -55,11 +65,24 @@ public class StoredFileServiceImpl implements StoredFileService {
         String userUuid = storedFile.getProperty().getUser().getUuid();
         if (fileStorageService.deleteFileFromStorage(storedFile.getUuid(), userUuid)) {
             storedFileRepository.deleteById(storedFile.getId());
+            LOGGER.info(String.format("Deleted file '%s' with UUID '%s'", storedFile.getOriginalFileName(), storedFile.getUuid()));
             return true;
         } else {
             return false;
         }
 
+    }
+
+    @Override
+    public boolean deleteAllByCategoryAndCategoryItemId(StoredFile.FileCategory category, long categoryItemId) {
+        boolean returnValue = true;
+        List<StoredFile> storedFiles = findByCategoryAndCategoryItemId(category, categoryItemId);
+        for (StoredFile storedFile : storedFiles) {
+            if (delete(storedFile) == false) {
+                returnValue = false;
+            }
+        }
+        return returnValue;
     }
 
     @Override

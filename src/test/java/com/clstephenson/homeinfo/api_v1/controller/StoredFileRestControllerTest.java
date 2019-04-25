@@ -1,5 +1,6 @@
 package com.clstephenson.homeinfo.api_v1.controller;
 
+import com.clstephenson.homeinfo.api_v1.controller.rest.StoredFileRestController;
 import com.clstephenson.homeinfo.api_v1.model.Property;
 import com.clstephenson.homeinfo.api_v1.model.StoredFile;
 import com.clstephenson.homeinfo.api_v1.model.UploadFileResponse;
@@ -10,6 +11,7 @@ import com.clstephenson.homeinfo.api_v1.service.StoredFileService;
 import com.clstephenson.homeinfo.api_v1.testutils.TestDataHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -30,9 +32,10 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@Ignore
 @RunWith(SpringRunner.class)
-@WebMvcTest(StoredFileController.class)
-public class StoredFileControllerTest {
+@WebMvcTest(StoredFileRestController.class)
+public class StoredFileRestControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;

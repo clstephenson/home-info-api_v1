@@ -1,15 +1,23 @@
 package com.clstephenson.homeinfo.api_v1.model;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity(name = "ideas")
 public class Idea extends AuditModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(
+            strategy = GenerationType.AUTO,
+            generator = "native")
+    @GenericGenerator(
+            name = "native",
+            strategy = "native"
+    )
     private Long id;
 
     @ManyToOne(optional = false)
@@ -17,6 +25,8 @@ public class Idea extends AuditModel {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Property property;
 
+    @Column(nullable = false)
+    @Size(min = 2)
     private String description;
 
     private String notes;

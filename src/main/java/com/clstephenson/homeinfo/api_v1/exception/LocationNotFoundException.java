@@ -1,25 +1,24 @@
 package com.clstephenson.homeinfo.api_v1.exception;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.clstephenson.homeinfo.api_v1.logging.MyLogger;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
 public class LocationNotFoundException extends ResourceNotFoundException {
 
-    Logger logger = LoggerFactory.getLogger(LocationNotFoundException.class);
+    private final MyLogger LOGGER = new MyLogger(LocationNotFoundException.class);
 
     public LocationNotFoundException(Long id) {
         super("Location ID [" + id + "] not found");
-        logger.warn(getLocalizedMessage());
+        LOGGER.log(getLocalizedMessage());
     }
 
     public LocationNotFoundException(String message) {
         super(message);
-        logger.warn(getLocalizedMessage());
+        LOGGER.log(getLocalizedMessage());
     }
 
     public LocationNotFoundException(String message, Throwable cause) {
         super(message, cause);
-        logger.warn(getLocalizedMessage(), cause);
+        LOGGER.log(getLocalizedMessage());
     }
 }

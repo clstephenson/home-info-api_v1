@@ -1,7 +1,8 @@
-package com.clstephenson.homeinfo.api_v1.controller;
+package com.clstephenson.homeinfo.api_v1.controller.rest;
 
 import com.clstephenson.homeinfo.api_v1.exception.UserNotFoundException;
 import com.clstephenson.homeinfo.api_v1.model.User;
+import com.clstephenson.homeinfo.api_v1.model.UserList;
 import com.clstephenson.homeinfo.api_v1.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,36 +10,37 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
-public class UserController {
+public class UserRestController {
 
     @Autowired
     private UserService userService;
 
     // Find All
-    @GetMapping("/users")
-    List<User> getAllUsers() {
-        return userService.getAll();
+    @GetMapping("/apiv1/users")
+    ResponseEntity<UserList> getAllUsers() {
+        UserList userList = new UserList();
+        userService.getAll().forEach(user -> userList.getUsers().add(user));
+        return ResponseEntity.ok()
+                .header("Content-Type", "application/json; charset=utf-8")
+                .body(userList);
     }
 
-    // Save
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/users")
-    User createUser(@Valid @RequestBody User newUser) {
-        return userService.save(newUser);
-    }
-
-    // Find by ID
-    @GetMapping("/users/{userId}")
-    User findUser(@PathVariable Long userId) {
+    @GetMapping("/apiv1/users/{userId}")
+    User findUserById(@PathVariable Long userId) {
         return userService.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/apiv1/users")
+    User createUser(@Valid @RequestBody User newUser) {
+        return userService.save(newUser);
+    }
+
     // Update User
-    @PutMapping("/users/{userId}")
+    @PutMapping("/apiv1/users/{userId}")
     User updateUser(@PathVariable Long userId, @Valid @RequestBody User userRequest) {
         return userService.findById(userId)
                 .map(user -> {
@@ -51,7 +53,7 @@ public class UserController {
                 }).orElseThrow(() -> new UserNotFoundException(userId));
     }
 
-    @DeleteMapping("/users/{userId}")
+    @DeleteMapping("/apiv1/users/{userId}")
     ResponseEntity<?> deleteUser(@PathVariable Long userId) {
         return userService.findById(userId).map(user -> {
             userService.deleteById(userId);

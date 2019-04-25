@@ -1,5 +1,4 @@
 package com.clstephenson.homeinfo.api_v1.configproperty;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "file")

@@ -7,4 +7,6 @@ public interface StoredFileRepository extends CrudRepository<StoredFile, Long> {
 
     Iterable<StoredFile> findAllByPropertyId(long propertyId);
 
+    Iterable<StoredFile> findAllByCategoryAndCategoryItemId(StoredFile.FileCategory category, long categoryItemId);
+
 }

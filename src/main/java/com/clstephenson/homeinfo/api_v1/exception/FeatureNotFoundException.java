@@ -1,25 +1,24 @@
 package com.clstephenson.homeinfo.api_v1.exception;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.clstephenson.homeinfo.api_v1.logging.MyLogger;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
 public class FeatureNotFoundException extends ResourceNotFoundException {
 
-    Logger logger = LoggerFactory.getLogger(FeatureNotFoundException.class);
+    private final MyLogger LOGGER = new MyLogger(FeatureNotFoundException.class);
 
     public FeatureNotFoundException(Long id) {
         super("Feature ID [" + id + "] not found");
-        logger.warn(getLocalizedMessage());
+        LOGGER.log(getLocalizedMessage());
     }
 
     public FeatureNotFoundException(String message) {
         super(message);
-        logger.warn(getLocalizedMessage());
+        LOGGER.log(getLocalizedMessage());
     }
 
     public FeatureNotFoundException(String message, Throwable cause) {
         super(message, cause);
-        logger.warn(getLocalizedMessage(), cause);
+        LOGGER.log(getLocalizedMessage());
     }
 }

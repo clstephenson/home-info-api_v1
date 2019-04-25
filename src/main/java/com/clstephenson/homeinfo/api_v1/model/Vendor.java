@@ -1,5 +1,6 @@
 package com.clstephenson.homeinfo.api_v1.model;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -11,7 +12,13 @@ import javax.validation.constraints.Size;
 public class Vendor extends AuditModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(
+            strategy = GenerationType.AUTO,
+            generator = "native")
+    @GenericGenerator(
+            name = "native",
+            strategy = "native"
+    )
     private Long id;
 
     private String name;

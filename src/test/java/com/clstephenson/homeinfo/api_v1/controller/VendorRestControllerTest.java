@@ -1,13 +1,14 @@
 package com.clstephenson.homeinfo.api_v1.controller;
 
-import com.clstephenson.homeinfo.api_v1.model.Location;
-import com.clstephenson.homeinfo.api_v1.model.Property;
+import com.clstephenson.homeinfo.api_v1.controller.rest.VendorRestController;
 import com.clstephenson.homeinfo.api_v1.model.User;
-import com.clstephenson.homeinfo.api_v1.service.LocationService;
-import com.clstephenson.homeinfo.api_v1.service.PropertyService;
+import com.clstephenson.homeinfo.api_v1.model.Vendor;
+import com.clstephenson.homeinfo.api_v1.service.UserService;
+import com.clstephenson.homeinfo.api_v1.service.VendorService;
 import com.clstephenson.homeinfo.api_v1.testutils.TestDataHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,10 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@Ignore
 @RunWith(SpringRunner.class)
-@WebMvcTest(LocationController.class)
-public class LocationControllerTest {
+@WebMvcTest(VendorRestController.class)
+public class VendorRestControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -38,106 +40,104 @@ public class LocationControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private LocationService locationService;
+    private VendorService vendorService;
 
     @MockBean
-    private PropertyService propertyService;
+    private UserService userService;
 
-    private Property property;
-    private Location location;
-    private List<Location> allLocations;
+    private User user;
+    private Vendor vendor;
+    private List<Vendor> vendorList;
     private long validId = 1;
     private long invalidId = 100;
 
     @Before
     public void setup() {
-        User user = TestDataHelper.getTestUser();
+        user = TestDataHelper.getTestUser();
         user.setId(validId);
-        property = TestDataHelper.getTestProperty(user);
-        property.setId(validId);
-        location = TestDataHelper.getTestLocation(property);
-        location.setId(validId);
-        allLocations = Collections.singletonList(location);
+        vendor = TestDataHelper.getTestVendor(user);
+        vendor.setId(validId);
+        vendorList = Collections.singletonList(vendor);
 
-        given(propertyService.existsById(validId)).willReturn(true);
-        given(propertyService.existsById(invalidId)).willReturn(false);
-        given(propertyService.findById(validId)).willReturn(Optional.of(property));
-        given(locationService.getAll()).willReturn(allLocations);
-        given(locationService.findByPropertyId(validId)).willReturn(allLocations);
-        given(locationService.findById(validId)).willReturn(Optional.of(location));
-        given(locationService.save(location)).willReturn(location);
+        given(userService.existsById(validId)).willReturn(true);
+        given(userService.existsById(invalidId)).willReturn(false);
+        given(userService.findById(validId)).willReturn(Optional.of(user));
+        given(vendorService.getAll()).willReturn(vendorList);
+        given(vendorService.findByUserId(validId)).willReturn(vendorList);
+        given(vendorService.findById(validId)).willReturn(Optional.of(vendor));
+        given(vendorService.save(vendor)).willReturn(vendor);
     }
 
     @Test
-    public void whenGetByValidPropertyId_thenReturn200AndJsonArray() throws Exception {
-        mockMvc.perform(get("/location/property/" + validId))
+    public void whenGetByValidUserId_thenReturn200AndJsonArray() throws Exception {
+        mockMvc.perform(get("/vendor/user/" + validId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].name", is(location.getName())));
+                .andExpect(jsonPath("$[0].name", is(vendor.getName())));
     }
 
     @Test
-    public void whenGetByInvalidPropertyId_thenReturn404() throws Exception {
-        mockMvc.perform(get("/location/property/" + invalidId))
+    public void whenGetByInvalidUserId_thenReturn404() throws Exception {
+        mockMvc.perform(get("/vendor/user/" + invalidId))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void whenFindByValidId_thenReturn200AndJson() throws Exception {
-        mockMvc.perform(get("/location/" + validId))
+        mockMvc.perform(get("/vendor/" + validId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.name", is(location.getName())));
+                .andExpect(jsonPath("$.name", is(vendor.getName())));
     }
 
     @Test
     public void whenFindByInvalidId_thenReturn404() throws Exception {
-        mockMvc.perform(get("/location/" + invalidId))
+        mockMvc.perform(get("/vendor/" + invalidId))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    public void whenCreateForValidProperty_theReturn201() throws Exception {
-        mockMvc.perform(post("/location/property/" + validId)
-                .content(objectMapper.writeValueAsString(location))
+    public void whenCreateForValidUser_theReturn201() throws Exception {
+        mockMvc.perform(post("/vendor/user/" + validId)
+                .content(objectMapper.writeValueAsString(vendor))
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isCreated());
     }
 
     @Test
-    public void whenCreateForInvalidProperty_theReturn404() throws Exception {
-        mockMvc.perform(post("/location/property/" + invalidId)
-                .content(objectMapper.writeValueAsString(location))
+    public void whenCreateForInvalidUser_theReturn404() throws Exception {
+        mockMvc.perform(post("/vendor/user/" + invalidId)
+                .content(objectMapper.writeValueAsString(vendor))
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void whenUpdateWithValidId_thenReturn200() throws Exception {
-        mockMvc.perform(put("/location/" + validId)
-                .content(objectMapper.writeValueAsString(location))
+        mockMvc.perform(put("/vendor/" + validId)
+                .content(objectMapper.writeValueAsString(vendor))
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void whenUpdateWithInvalidId_thenReturn404() throws Exception {
-        mockMvc.perform(put("/location/" + invalidId)
-                .content(objectMapper.writeValueAsString(location))
+        mockMvc.perform(put("/vendor/" + invalidId)
+                .content(objectMapper.writeValueAsString(vendor))
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void whenDeleteByValidId_thenReturn200() throws Exception {
-        mockMvc.perform(delete("/location/" + validId))
+        mockMvc.perform(delete("/vendor/" + validId))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void whenDeleteByInvalidId_thenReturn404() throws Exception {
-        mockMvc.perform(delete("/location/" + invalidId))
+        mockMvc.perform(delete("/vendor/" + invalidId))
                 .andExpect(status().isNotFound());
     }
 

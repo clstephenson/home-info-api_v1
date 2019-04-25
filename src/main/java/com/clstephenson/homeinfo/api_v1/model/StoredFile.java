@@ -1,5 +1,6 @@
 package com.clstephenson.homeinfo.api_v1.model;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -9,7 +10,13 @@ import javax.persistence.*;
 public class StoredFile extends AuditModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(
+            strategy = GenerationType.AUTO,
+            generator = "native")
+    @GenericGenerator(
+            name = "native",
+            strategy = "native"
+    )
     private Long id;
 
     @ManyToOne(optional = false)
@@ -25,17 +32,21 @@ public class StoredFile extends AuditModel {
     @Column(name = "content_type")
     private String contentType;
 
+    @Enumerated(value = EnumType.STRING)
     private FileCategory category;
+
+    private Long categoryItemId;
 
     public StoredFile() {
     }
 
-    public StoredFile(Property property, String originalFileName, String uuid, String contentType, FileCategory category) {
+    public StoredFile(Property property, String originalFileName, String uuid, String contentType, FileCategory category, Long categoryItemId) {
         this.property = property;
         this.originalFileName = originalFileName;
         this.uuid = uuid;
         this.contentType = contentType;
         this.category = category;
+        this.categoryItemId = categoryItemId;
     }
 
     public Long getId() {
@@ -86,8 +97,19 @@ public class StoredFile extends AuditModel {
         this.category = category;
     }
 
+    public Long getCategoryItemId() {
+        return categoryItemId;
+    }
+
+    public void setCategoryItemId(Long categoryItemId) {
+        this.categoryItemId = categoryItemId;
+    }
+
     public enum FileCategory {
-        DOCUMENT,
-        PHOTO
+        PROPERTY,
+        TASK,
+        LOCATION,
+        FEATURE,
+        IDEA
     }
 }

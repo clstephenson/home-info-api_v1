@@ -1,7 +1,9 @@
 package com.clstephenson.homeinfo.api_v1.model;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -10,7 +12,13 @@ import java.util.Date;
 public class Task extends AuditModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(
+            strategy = GenerationType.AUTO,
+            generator = "native")
+    @GenericGenerator(
+            name = "native",
+            strategy = "native"
+    )
     private Long id;
 
     @ManyToOne(optional = false)
@@ -19,9 +27,10 @@ public class Task extends AuditModel {
     private Property property;
 
     @Column(nullable = false)
-    private String task;
+    private String description;
 
     @Temporal(value = TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "last_completion_date")
     private Date lastCompletionDate;
 
@@ -38,10 +47,10 @@ public class Task extends AuditModel {
     public Task() {
     }
 
-    public Task(Property property, String task, Date lastCompletionDate, Integer frequencyInDays, Boolean isRecurring,
+    public Task(Property property, String description, Date lastCompletionDate, Integer frequencyInDays, Boolean isRecurring,
                 Vendor vendor) {
         this.property = property;
-        this.task = task;
+        this.description = description;
         this.lastCompletionDate = lastCompletionDate;
         this.frequencyInDays = frequencyInDays;
         this.isRecurring = isRecurring;
@@ -64,12 +73,12 @@ public class Task extends AuditModel {
         this.property = property;
     }
 
-    public String getTask() {
-        return task;
+    public String getDescription() {
+        return description;
     }
 
-    public void setTask(String task) {
-        this.task = task;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Date getLastCompletionDate() {
