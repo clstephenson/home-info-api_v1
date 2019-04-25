@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header(userId=${userId})"/>
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">My Properties</h1>
+        <p class="lead">Here is a list of your saved properties.</p>
+        <p class="lead">
+            <a class="btn btn-primary" th:href="@{/property(user_id=${userId})}">Create New Property</a>
+        </p>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="starter-template">
+        <p th:if="${#lists.isEmpty(properties)}">You have not created any properties yet.</p>
+        <table class="table" th:unless="${#lists.isEmpty(properties)}">
+            <thead>
+            <tr>
+                <th scope="col">Property Nickname</th>
+                <th scope="col">Address</th>
+                <th scope="col">City</th>
+                <th scope="col">State</th>
+                <th scope="col">Postal Code</th>
+                <th scope="col">Sq. Footage</th>
+                <th scope="col">Year Built</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="property : ${properties}">
+                <td><a th:href="@{/property(property_id=${property?.id}, user_id=${userId})}"
+                       th:text="${property?.name}"></a></td>
+                <td th:text="${property?.address?.address}"></td>
+                <td th:text="${property?.address?.city}"></td>
+                <td th:text="${property?.address?.stateOrProvince}"></td>
+                <td th:text="${property?.address?.postalCode}"></td>
+                <td th:text="${property?.squareFootage}"></td>
+                <td th:text="${property?.yearBuilt}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!--<ul th:each="property : ${properties}">-->
+        <!--<a th:href="@{/property(property_id=${property.id}, user_id=${userId})}"><li th:text="${property.name}"></li></a>-->
+        <!--</ul>-->
+    </div>
+
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

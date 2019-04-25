@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header(userId=${userId})"/>
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4" th:if="${!#strings.isEmpty(property.name)}" th:text="${property.name}">Property
+            Details</h1>
+        <h1 class="display-4" th:unless="${!#strings.isEmpty(property.name)}">New Property</h1>
+        <p class="lead">View and edit property details.</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            <div th:replace="fragments/property-nav :: propertyNav(${property.id}, ${userId}, 'properties')"/>
+        </div>
+
+        <div class="col">
+            <main class="starter-template">
+                <div class="alert alert-success" th:if="${!#strings.isEmpty(message)}" th:text="${message}"></div>
+
+                <form action="#" th:action="${action}" th:object="${property}" method="post">
+                    <div class="form-row">
+                        <div class="form-group col-12">
+                            <label th:for="name">Property Nickname</label>
+                            <input type="text" class="form-control" th:field="*{name}"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-12">
+                            <label th:for="address.address">Address</label>
+                            <input type="text" class="form-control" th:field="*{address.address}"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <label th:for="address.city">City</label>
+                            <input type="text" class="form-control" th:field="*{address.city}"/>
+                        </div>
+                        <div class="form-group col-6">
+                            <label th:for="address.stateOrProvince">State</label>
+                            <input type="text" class="form-control" th:field="*{address.stateOrProvince}"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <label th:for="address.postalCode">Postal Code</label>
+                            <input type="text" class="form-control" th:field="*{address.postalCode}"/>
+                        </div>
+                        <div class="form-group col-6">
+                            <label th:for="address.country">Country</label>
+                            <input type="text" class="form-control" th:field="*{address.country}"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <label th:for="yearBuilt">Year Built</label>
+                            <input type="text" class="form-control" th:field="*{yearBuilt}"/>
+                        </div>
+                        <div class="form-group col-6">
+                            <label th:for="squareFootage">Square Footage</label>
+                            <input type="text" class="form-control" th:field="*{squareFootage}"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-12">
+                            <input type="hidden" th:field="*{user.id}"/>
+                            <input type="hidden" th:field="*{id}"/>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

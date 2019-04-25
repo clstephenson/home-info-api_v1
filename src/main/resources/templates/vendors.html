@@ -1,0 +1,37 @@
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header(userId=${userId})"/>
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">My Vendors</h1>
+        <p class="lead">Here is a list of your saved vendors/contractors.</p>
+        <p class="lead">
+            <a class="btn btn-primary" th:href="@{/vendor(user_id=${userId})}">Create New Vendor</a>
+        </p>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="starter-template">
+
+        <ul th:each="vendor : ${vendors}">
+            <a th:href="@{/vendor(vendor_id=${vendor.id}, user_id=${userId})}">
+                <li th:text="${vendor.name}"></li>
+            </a>
+        </ul>
+    </div>
+
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

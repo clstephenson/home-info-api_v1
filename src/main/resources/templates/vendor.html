@@ -1,0 +1,68 @@
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header(userId=${userId})"/>
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4" th:if="${!#strings.isEmpty(vendor.name)}" th:text="${vendor.name}">Vendor Details</h1>
+        <h1 class="display-4" th:unless="${!#strings.isEmpty(vendor.name)}">New Vendor</h1>
+        <p class="lead">View and edit vendor details.</p>
+    </div>
+</div>
+
+<div class="container">
+
+    <main class="starter-template">
+        <div class="alert alert-success" th:if="${!#strings.isEmpty(message)}" th:text="${message}"></div>
+
+        <form action="#" th:action="${action}" th:object="${vendor}" method="post">
+            <div class="form-row">
+                <div class="form-group col-12">
+                    <label th:for="name">Vendor</label>
+                    <input type="text" class="form-control" th:field="*{name}"/>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-12">
+                    <label th:for="phone">Phone</label>
+                    <input type="text" class="form-control" th:field="*{phone}"/>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label th:for="email">Email</label>
+                    <input type="email" class="form-control" th:field="*{email}"/>
+                </div>
+                <div class="form-group col-6">
+                    <label th:for="website">Website URL</label>
+                    <input type="url" class="form-control" th:field="*{website}"/>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label th:for="notes">Notes</label>
+                    <textarea class="form-control" th:field="*{notes}"></textarea>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-12">
+                    <input type="hidden" th:field="*{user.id}"/>
+                    <input type="hidden" th:field="*{id}"/>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+        </form>
+    </main>
+
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header(userId=${userId})"/>
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Rooms and Spaces</h1>
+        <p class="lead">Saved spaces or rooms locations in the property.</p>
+        <p class="lead">
+            <a class="btn btn-primary" href="#" th:href="@{/location(property_id=${propertyId}, user_id=${userId})}">Create
+                New Room</a>
+        </p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            <div th:replace="fragments/property-nav :: propertyNav(${propertyId}, ${userId}, 'locations')"/>
+        </div>
+
+        <div class="col">
+            <main class="starter-template">
+                <p th:if="${#lists.isEmpty(locations)}">You have not created any rooms yet.</p>
+
+                <table class="table" th:unless="${#lists.isEmpty(locations)}">
+                    <thead>
+                    <tr>
+                        <th scope="col">Location/Room Name</th>
+                        <th scope="col">Dimensions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="location : ${locations}">
+                        <td>
+                            <a th:href="@{/location(location_id=${location?.id}, user_id=${userId}, property_id=${propertyId})}"
+                               th:text="${location?.name}"></a></td>
+                        <td th:text="${location?.dimensions}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </main>
+        </div>
+    </div>
+
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

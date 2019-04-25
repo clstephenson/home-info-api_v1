@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header(userId=${userId})"/>
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Feature List</h1>
+        <p class="lead">Saved property features including colors, materials, etc.</p>
+        <p class="lead">
+            <a class="btn btn-primary" href="#" th:href="@{/feature(property_id=${propertyId}, user_id=${userId})}">Create
+                New Feature</a>
+        </p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            <div th:replace="fragments/property-nav :: propertyNav(${propertyId}, ${userId}, 'features')"/>
+        </div>
+
+        <div class="col">
+
+            <main class="starter-template">
+                <!-- Nav tabs -->
+                <ul class="nav nav-pills mb-4" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="material-tab" data-toggle="tab" href="#material" role="tab"
+                           aria-controls="material" aria-selected="true">Materials</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="color-tab" data-toggle="tab" href="#color" role="tab"
+                           aria-controls="color" aria-selected="false">Colors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="window-tab" data-toggle="tab" href="#window" role="tab"
+                           aria-controls="window" aria-selected="false">Windows</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="plant-tab" data-toggle="tab" href="#plant" role="tab"
+                           aria-controls="plant" aria-selected="false">Plants/Trees</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="appliance-tab" data-toggle="tab" href="#appliance" role="tab"
+                           aria-controls="appliance" aria-selected="false">Appliances</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="other-tab" data-toggle="tab" href="#other" role="tab"
+                           aria-controls="other" aria-selected="false">Others</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="all"
+                           aria-selected="false">All Features</a>
+                    </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane active" id="material" role="tabpanel" aria-labelledby="material-tab">
+                        <table class="table" th:if="${!#lists.isEmpty(features)}">
+                            <thead>
+                            <tr>
+                                <th scope="col">Feature</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Location</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="feature : ${features}"
+                                th:if="${feature.type} == ${T(com.clstephenson.homeinfo.api_v1.model.FeatureType).MATERIAL}">
+                                <td>
+                                    <a th:href="@{/feature(feature_id=${feature.id}, user_id=${userId}, property_id=${propertyId})}"
+                                       th:text="${feature.name}"></a></td>
+                                <td th:text="${feature?.type}"></td>
+                                <td th:text="${feature?.location?.name}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div class="tab-pane" id="color" role="tabpanel" aria-labelledby="color-tab">
+                        <table class="table" th:if="${!#lists.isEmpty(features)}">
+                            <thead>
+                            <tr>
+                                <th scope="col">Feature</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Location</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="feature : ${features}"
+                                th:if="${feature.type} == ${T(com.clstephenson.homeinfo.api_v1.model.FeatureType).COLOR}">
+                                <td>
+                                    <a th:href="@{/feature(feature_id=${feature.id}, user_id=${userId}, property_id=${propertyId})}"
+                                       th:text="${feature.name}"></a></td>
+                                <td th:text="${feature?.type}"></td>
+                                <td th:text="${feature?.location?.name}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div class="tab-pane" id="window" role="tabpanel" aria-labelledby="window-tab">
+                        <table class="table" th:if="${!#lists.isEmpty(features)}">
+                            <thead>
+                            <tr>
+                                <th scope="col">Feature</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Location</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="feature : ${features}"
+                                th:if="${feature.type} == ${T(com.clstephenson.homeinfo.api_v1.model.FeatureType).WINDOW}">
+                                <td>
+                                    <a th:href="@{/feature(feature_id=${feature.id}, user_id=${userId}, property_id=${propertyId})}"
+                                       th:text="${feature.name}"></a></td>
+                                <td th:text="${feature?.type}"></td>
+                                <td th:text="${feature?.location?.name}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div class="tab-pane" id="plant" role="tabpanel" aria-labelledby="plant-tab">
+                        <table class="table" th:if="${!#lists.isEmpty(features)}">
+                            <thead>
+                            <tr>
+                                <th scope="col">Feature</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Location</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="feature : ${features}"
+                                th:if="${feature.type} == ${T(com.clstephenson.homeinfo.api_v1.model.FeatureType).PLANT}">
+                                <td>
+                                    <a th:href="@{/feature(feature_id=${feature.id}, user_id=${userId}, property_id=${propertyId})}"
+                                       th:text="${feature.name}"></a></td>
+                                <td th:text="${feature?.type}"></td>
+                                <td th:text="${feature?.location?.name}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div class="tab-pane" id="appliance" role="tabpanel" aria-labelledby="appliance-tab">
+                        <table class="table" th:if="${!#lists.isEmpty(features)}">
+                            <thead>
+                            <tr>
+                                <th scope="col">Feature</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Location</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="feature : ${features}"
+                                th:if="${feature.type} == ${T(com.clstephenson.homeinfo.api_v1.model.FeatureType).APPLIANCE}">
+                                <td>
+                                    <a th:href="@{/feature(feature_id=${feature.id}, user_id=${userId}, property_id=${propertyId})}"
+                                       th:text="${feature.name}"></a></td>
+                                <td th:text="${feature?.type}"></td>
+                                <td th:text="${feature?.location?.name}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div class="tab-pane" id="other" role="tabpanel" aria-labelledby="other-tab">
+                        <table class="table" th:if="${!#lists.isEmpty(features)}">
+                            <thead>
+                            <tr>
+                                <th scope="col">Feature</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Location</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="feature : ${features}"
+                                th:if="${feature.type} == ${T(com.clstephenson.homeinfo.api_v1.model.FeatureType).OTHER}">
+                                <td>
+                                    <a th:href="@{/feature(feature_id=${feature.id}, user_id=${userId}, property_id=${propertyId})}"
+                                       th:text="${feature.name}"></a></td>
+                                <td th:text="${feature?.type}"></td>
+                                <td th:text="${feature?.location?.name}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div class="tab-pane" id="all" role="tabpanel" aria-labelledby="all-tab">
+                        <table class="table" th:if="${!#lists.isEmpty(features)}">
+                            <thead>
+                            <tr>
+                                <th scope="col">Feature</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Location</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="feature : ${features}">
+                                <td>
+                                    <a th:href="@{/feature(feature_id=${feature.id}, user_id=${userId}, property_id=${propertyId})}"
+                                       th:text="${feature.name}"></a></td>
+                                <td th:text="${feature?.type}"></td>
+                                <td th:text="${feature?.location?.name}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

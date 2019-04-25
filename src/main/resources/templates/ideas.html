@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header(userId=${userId})"/>
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Rooms and Spaces</h1>
+        <p class="lead">Saved ideas for the property.</p>
+        <p class="lead">
+            <a class="btn btn-primary" href="#" th:href="@{/idea(property_id=${propertyId}, user_id=${userId})}">Create
+                New Idea</a>
+        </p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            <div th:replace="fragments/property-nav :: propertyNav(${propertyId}, ${userId}, 'ideas')"/>
+        </div>
+
+        <div class="col">
+            <main class="starter-template">
+                <p th:if="${#lists.isEmpty(ideas)}">You have not created any ideas yet.</p>
+
+                <table class="table" th:unless="${#lists.isEmpty(ideas)}">
+                    <thead>
+                    <tr>
+                        <th scope="col">Description</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="idea : ${ideas}">
+                        <td><a th:href="@{/idea(idea_id=${idea?.id}, user_id=${userId}, property_id=${propertyId})}"
+                               th:text="${idea?.description}"></a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </main>
+        </div>
+    </div>
+
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

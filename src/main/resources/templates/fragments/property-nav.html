@@ -1,0 +1,59 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="propertyNav(propertyId, userId, currentPage)">
+    <nav class="navbar navbar-light bg-light">
+        <div class="navbar" id="navbarNav">
+            <ul class="navbar-nav flex-column">
+                <li class="nav-item"
+                    th:classappend="${#strings.equalsIgnoreCase(currentPage, 'properties')} ? 'active' : ''">
+                    <a class="nav-link" href="#" th:href="@{/property(property_id=${propertyId}, user_id=${userId})}">
+                        Property Details
+                        <span class="sr-only"
+                              th:if="${#strings.equalsIgnoreCase(currentPage, 'properties')}">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item"
+                    th:classappend="${#strings.equalsIgnoreCase(currentPage, 'maintenance')} ? 'active' : ''">
+                    <a class="nav-link" href="#" th:href="@{/tasks(property_id=${propertyId}, user_id=${userId})}">
+                        Maintenance
+                        <span class="sr-only"
+                              th:if="${#strings.equalsIgnoreCase(currentPage, 'maintenance')}">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item"
+                    th:classappend="${#strings.equalsIgnoreCase(currentPage, 'features')} ? 'active' : ''">
+                    <a class="nav-link" href="#" th:href="@{/features(property_id=${propertyId}, user_id=${userId})}">
+                        Features
+                        <span class="sr-only"
+                              th:if="${#strings.equalsIgnoreCase(currentPage, 'features')}">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item"
+                    th:classappend="${#strings.equalsIgnoreCase(currentPage, 'locations')} ? 'active' : ''">
+                    <a class="nav-link" href="#" th:href="@{/locations(property_id=${propertyId}, user_id=${userId})}">
+                        Rooms/Locations
+                        <span class="sr-only"
+                              th:if="${#strings.equalsIgnoreCase(currentPage, 'locations')}">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item"
+                    th:classappend="${#strings.equalsIgnoreCase(currentPage, 'ideas')} ? 'active' : ''">
+                    <a class="nav-link" href="#" th:href="@{/ideas(property_id=${propertyId}, user_id=${userId})}">
+                        Ideas
+                        <span class="sr-only"
+                              th:if="${#strings.equalsIgnoreCase(currentPage, 'ideas')}">(current)</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+</body>
+</html>

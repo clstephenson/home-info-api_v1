@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header(userId=${userId})"/>
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Maintenance</h1>
+        <p class="lead">Property maintenance and other recurring tasks.</p>
+        <p class="lead">
+            <a class="btn btn-primary" href="#" th:href="@{/task(property_id=${propertyId}, user_id=${userId})}">Create
+                New Task</a>
+        </p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            <div th:replace="fragments/property-nav :: propertyNav(${propertyId}, ${userId}, 'maintenance')"/>
+        </div>
+
+        <div class="col">
+            <main class="starter-template">
+                <p th:if="${#lists.isEmpty(tasks)}">You have not created any tasks yet.</p>
+
+                <table class="table" th:unless="${#lists.isEmpty(tasks)}">
+                    <thead>
+                    <tr>
+                        <th scope="col">Description</th>
+                        <th scope="col">Last Completed</th>
+                        <th scope="col">Repeating?</th>
+                        <th scope="col">How Often? (days)</th>
+                        <th scope="col">Contractor/Vendor</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="task : ${tasks}">
+                        <td><a th:href="@{/task(task_id=${task?.id}, user_id=${userId}, property_id=${propertyId})}"
+                               th:text="${task?.description}"></a></td>
+                        <td th:text="${{task?.lastCompletionDate}}"></td>
+                        <td th:text="${task?.recurring} ? 'Yes' : 'No'"></td>
+                        <td th:text="${task?.frequencyInDays}"></td>
+                        <td th:text="${task?.vendor?.name}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </main>
+        </div>
+    </div>
+
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

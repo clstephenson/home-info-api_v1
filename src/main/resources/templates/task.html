@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header(userId=${userId})"/>
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4" th:if="${!#strings.isEmpty(task.description)}" th:text="${task.description}">Maintenance
+            Details</h1>
+        <h1 class="display-4" th:unless="${!#strings.isEmpty(task.description)}">New Task</h1>
+        <p class="lead">View and edit maintenance task.</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            <div th:replace="fragments/property-nav :: propertyNav(${task.property.id}, ${userId}, 'maintenance')"/>
+        </div>
+
+        <div class="col">
+            <main class="starter-template">
+                <div class="alert alert-success" th:if="${!#strings.isEmpty(message)}" th:text="${message}"></div>
+
+                <!-- Nav tabs -->
+                <div th:replace="fragments/details :: tabs(${files})"/>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane active" id="details" role="tabpanel" aria-labelledby="details-tab">
+
+                        <form action="#" th:action="${action}" th:object="${task}" method="post">
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <label th:for="description">Task Name</label>
+                                    <input type="text" class="form-control" th:field="*{description}"/>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <label th:for="lastCompletionDate">Last Completed</label>
+                                    <input type="date" class="form-control"
+                                           th:field="*{{lastCompletionDate}}"/>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-check form-check-inline col">
+                                    <input type="checkbox" class="form-check-input" th:field="*{recurring}"/>
+                                    <label class="form-check-label" th:for="${#ids.prev('recurring')}">Repeats?</label>
+                                </div>
+                                <div class="form-group col">
+                                    <label th:for="frequencyInDays">Frequency (Days)</label>
+                                    <input type="number" class="form-control" th:field="*{frequencyInDays}"/>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <label th:for="vendor">Contractor/Vendor</label>
+                                    <select class="form-control" name="vendor.id" id="vendor.id">
+                                        <option value="-1">None Selected</option>
+                                        <option th:each="vendor : ${vendorList}"
+                                                th:value="${vendor.id}"
+                                                th:text="${vendor.name}"
+                                                th:selected="(${vendor?.id}==*{vendor?.id}) ? true : false">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-12">
+                                    <input type="hidden" th:field="*{property.id}"/>
+                                    <input type="hidden" th:field="*{id}"/>
+                                    <button type="submit" name="action" th:value="save" class="btn btn-primary">Save
+                                        Changes
+                                    </button>
+                                    <button type="submit" name="action" th:value="delete" class="btn btn-danger">
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="files" role="tabpanel" aria-labelledby="files-tab">
+                        <div th:replace="fragments/details :: fileList(${category}, ${task.id}, ${task.property.id}, ${files})"/>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>
