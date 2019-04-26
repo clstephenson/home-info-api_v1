@@ -4,8 +4,8 @@ import com.clstephenson.homeinfo.api_v1.exception.PropertyNotFoundException;
 import com.clstephenson.homeinfo.api_v1.exception.UserNotFoundException;
 import com.clstephenson.homeinfo.api_v1.model.Property;
 import com.clstephenson.homeinfo.api_v1.model.PropertyList;
-import com.clstephenson.homeinfo.api_v1.model.StoredFile;
 import com.clstephenson.homeinfo.api_v1.model.User;
+import com.clstephenson.homeinfo.api_v1.service.LocationService;
 import com.clstephenson.homeinfo.api_v1.service.PropertyService;
 import com.clstephenson.homeinfo.api_v1.service.StoredFileService;
 import com.clstephenson.homeinfo.api_v1.service.UserService;
@@ -25,6 +25,9 @@ public class PropertyRestController {
 
     @Autowired
     private StoredFileService storedFileService;
+
+    @Autowired
+    private LocationService locationService;
 
     @Autowired
     private UserService userService;
@@ -83,9 +86,10 @@ public class PropertyRestController {
     @DeleteMapping("/apiv1/property/{propertyId}")
     ResponseEntity<?> deleteProperty(@PathVariable long propertyId) {
         return propertyService.findById(propertyId).map(property -> {
+            storedFileService.deleteAllByPropertyId(propertyId);
+            locationService.deleteByPropertyId(propertyId);
             propertyService.deleteById(propertyId);
-            storedFileService.deleteAllByCategoryAndCategoryItemId(StoredFile.FileCategory.PROPERTY, propertyId);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }).orElseThrow(() -> new PropertyNotFoundException(propertyId));
     }
 

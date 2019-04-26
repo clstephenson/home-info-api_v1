@@ -35,6 +35,12 @@ public class FeatureServiceImpl implements FeatureService {
     }
 
     @Override
+    public List<Feature> findByLocationId(long locationId) {
+        return StreamSupport.stream(featureRepository.findAllByLocationId(locationId).spliterator(), false)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Optional<Feature> findById(long id) {
         return featureRepository.findById(id);
     }

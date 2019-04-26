@@ -99,7 +99,7 @@ public class FeatureRestController {
             return featureService.findById(featureId).map(feature -> {
                 featureService.deleteById(featureId);
                 storedFileService.deleteAllByCategoryAndCategoryItemId(StoredFile.FileCategory.FEATURE, featureId);
-                return ResponseEntity.ok().build();
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
             }).orElseThrow(() -> new FeatureNotFoundException(featureId));
         } else {
             throw new PropertyNotFoundException(propertyId);

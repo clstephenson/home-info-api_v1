@@ -16,6 +16,9 @@ public class LocationServiceImpl implements LocationService {
     @Autowired
     LocationRepository locationRepository;
 
+    @Autowired
+    FeatureService featureService;
+
     @Override
     public List<Location> getAll() {
         return StreamSupport.stream(locationRepository.findAll().spliterator(), false)
@@ -39,7 +42,20 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
+    public void deleteByPropertyId(long propertyId) {
+        for (Location location : findByPropertyId(propertyId)) {
+            deleteById(location.getId());
+        }
+    }
+
+    @Override
     public void deleteById(long id) {
+        // set location field to null on any related features
+        featureService.findByLocationId(id).forEach(feature -> {
+            feature.setLocation(null);
+            featureService.save(feature);
+        });
+
         locationRepository.deleteById(id);
     }
 

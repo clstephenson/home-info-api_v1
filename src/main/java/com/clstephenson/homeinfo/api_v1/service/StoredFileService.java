@@ -22,5 +22,7 @@ public interface StoredFileService {
 
     boolean deleteAllByCategoryAndCategoryItemId(StoredFile.FileCategory category, long categoryItemId);
 
+    boolean deleteAllByPropertyId(long propertyId);
+
     boolean existsById(long id);
 }

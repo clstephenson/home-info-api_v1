@@ -81,7 +81,7 @@ public class LocationRestController {
             return locationService.findById(locationId).map(location -> {
                 locationService.deleteById(locationId);
                 storedFileService.deleteAllByCategoryAndCategoryItemId(StoredFile.FileCategory.LOCATION, locationId);
-                return ResponseEntity.ok().build();
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
             }).orElseThrow(() -> new LocationNotFoundException(locationId));
         } else {
             throw new PropertyNotFoundException(propertyId);

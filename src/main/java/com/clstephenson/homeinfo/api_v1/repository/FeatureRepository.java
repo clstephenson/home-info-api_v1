@@ -9,4 +9,6 @@ public interface FeatureRepository extends CrudRepository<Feature, Long> {
 
     Iterable<Feature> findAllByPropertyIdAndLocationId(long propertyId, long locationId);
 
+    Iterable<Feature> findAllByLocationId(long locationId);
+
 }

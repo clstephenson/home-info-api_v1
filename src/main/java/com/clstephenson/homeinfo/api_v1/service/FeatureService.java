@@ -12,6 +12,8 @@ public interface FeatureService {
 
     List<Feature> findByPropertyIdAndLocationId(long propertyId, long locationId);
 
+    List<Feature> findByLocationId(long locationId);
+
     Optional<Feature> findById(long id);
 
     Feature save(Feature feature);

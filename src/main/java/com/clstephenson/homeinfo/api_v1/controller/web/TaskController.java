@@ -69,7 +69,7 @@ public class TaskController {
 
         // get the list of vendors
         String endpoint = ControllerHelper.getUrlBase(request) + "/apiv1/user/{userId}/vendors";
-        VendorList vendorList = restTemplateHelper.getForEntity(VendorList.class, endpoint, propertyId);
+        VendorList vendorList = restTemplateHelper.getForEntity(VendorList.class, endpoint, userId);
         List<Vendor> vendors = vendorList == null ? Collections.emptyList() : vendorList.getVendors();
 
         model.addAttribute("files", files);

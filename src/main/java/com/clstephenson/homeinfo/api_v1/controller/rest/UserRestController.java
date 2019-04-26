@@ -57,7 +57,7 @@ public class UserRestController {
     ResponseEntity<?> deleteUser(@PathVariable Long userId) {
         return userService.findById(userId).map(user -> {
             userService.deleteById(userId);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }).orElseThrow(() -> new UserNotFoundException(userId));
     }
 }

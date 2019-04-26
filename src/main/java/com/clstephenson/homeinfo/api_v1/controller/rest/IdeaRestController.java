@@ -76,7 +76,7 @@ public class IdeaRestController {
             return ideaService.findById(ideaId).map(idea -> {
                 ideaService.deleteById(ideaId);
                 storedFileService.deleteAllByCategoryAndCategoryItemId(StoredFile.FileCategory.IDEA, ideaId);
-                return ResponseEntity.ok().build();
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
             }).orElseThrow(() -> new IdeaNotFoundException(ideaId));
         } else {
             throw new PropertyNotFoundException(propertyId);

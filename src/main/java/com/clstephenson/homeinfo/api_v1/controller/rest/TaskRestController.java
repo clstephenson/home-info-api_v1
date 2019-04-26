@@ -92,7 +92,7 @@ public class TaskRestController {
             return taskService.findById(taskId).map(task -> {
                 taskService.deleteById(taskId);
                 storedFileService.deleteAllByCategoryAndCategoryItemId(StoredFile.FileCategory.TASK, taskId);
-                return ResponseEntity.ok().build();
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
             }).orElseThrow(() -> new TaskNotFoundException(taskId));
         } else {
             throw new PropertyNotFoundException(propertyId);

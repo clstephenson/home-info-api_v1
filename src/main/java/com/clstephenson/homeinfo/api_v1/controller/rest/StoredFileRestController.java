@@ -125,7 +125,7 @@ public class StoredFileRestController {
             return storedFileService.findById(storedFileId)
                     .map(storedFile -> {
                         if (storedFileService.delete(storedFile)) {
-                            return ResponseEntity.ok().build();
+                            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
                         } else {
                             throw new StoredFileNotFoundException(storedFileId);
                         }

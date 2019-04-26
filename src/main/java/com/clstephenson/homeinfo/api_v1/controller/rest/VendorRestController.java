@@ -36,14 +36,6 @@ public class VendorRestController {
         }
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/apiv1/user/{userId}/vendor")
-    Vendor createVendorWithUserId(@Valid @RequestBody Vendor newVendor, @PathVariable Long userId) {
-        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        newVendor.setUser(user);
-        return vendorService.save(newVendor);
-    }
-
     @GetMapping("/apiv1/vendor/{vendorId}")
     ResponseEntity<Vendor> getVendorById(@PathVariable Long vendorId) {
         Vendor vendor = vendorService.findById(vendorId)
@@ -52,6 +44,14 @@ public class VendorRestController {
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json; charset=utf-8")
                 .body(vendor);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/apiv1/user/{userId}/vendor")
+    Vendor createVendorForUserId(@Valid @RequestBody Vendor newVendor, @PathVariable Long userId) {
+        User user = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        newVendor.setUser(user);
+        return vendorService.save(newVendor);
     }
 
     @PutMapping("/apiv1/vendor/{vendorId}")
@@ -72,7 +72,7 @@ public class VendorRestController {
     ResponseEntity<?> deleteVendor(@PathVariable Long vendorId) {
         return vendorService.findById(vendorId).map(vendor -> {
             vendorService.deleteById(vendorId);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }).orElseThrow(() -> new VendorNotFoundException(vendorId));
     }
 

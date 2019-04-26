@@ -1,5 +1,6 @@
 package com.clstephenson.homeinfo.api_v1.controller.web;
 
+import com.clstephenson.homeinfo.api_v1.logging.MyLogger;
 import com.clstephenson.homeinfo.api_v1.model.Vendor;
 import com.clstephenson.homeinfo.api_v1.model.VendorList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +18,14 @@ import java.util.List;
 @Controller
 public class VendorController {
 
+    private final MyLogger LOGGER = new MyLogger(VendorController.class);
+
     @Autowired
     private RestTemplateHelper restTemplateHelper;
 
     @GetMapping("/vendors")
     public String vendors(Model model, HttpServletRequest request,
                           @RequestParam(value = "user_id") long userId) {
-//        LoggedUser principal =  (LoggedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        User user = principal.getUser();
         String endpoint = ControllerHelper.getUrlBase(request) + "/apiv1/user/{userId}/vendors";
         List<Vendor> vendors = restTemplateHelper.getForEntity(VendorList.class, endpoint, userId).getVendors();
 
@@ -55,7 +56,7 @@ public class VendorController {
         return "/vendor";
     }
 
-    @PostMapping("/vendor")
+    @PostMapping(value = "/vendor", params = "action=save")
     public RedirectView saveVendor(Model model, HttpServletRequest request,
                                    @ModelAttribute("vendor") Vendor vendor,
                                    @RequestParam(value = "user_id") long userId) {
@@ -78,5 +79,23 @@ public class VendorController {
         }
         model.addAttribute("message", message);
         return new RedirectView("/vendors?user_id=" + userId);
+    }
+
+    @PostMapping(value = "/vendor", params = "action=delete")
+    public RedirectView deleteVendor(Model model, HttpServletRequest request,
+                                     @ModelAttribute("vendor") Vendor vendor,
+                                     @RequestParam(value = "user_id") Long userId) {
+        String message = "";
+        if (vendor != null) {
+            String endpoint = ControllerHelper.getUrlBase(request) + "/apiv1/vendor/{vendorId}";
+            restTemplateHelper.delete(endpoint, vendor.getId());
+
+            message = "The vendor was deleted.";
+        } else {
+            message = "The vendor could not be deleted.  Please try again.";
+        }
+        model.addAttribute("message", message);
+        final String destination = String.format("/vendors?user_id=%d", userId);
+        return ControllerHelper.redirectTo(request.getRequestURL().toString(), destination, LOGGER);
     }
 }

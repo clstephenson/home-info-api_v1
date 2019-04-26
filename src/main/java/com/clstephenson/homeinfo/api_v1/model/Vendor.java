@@ -23,7 +23,7 @@ public class Vendor extends AuditModel {
 
     private String name;
 
-    @Size(max = 10)
+    @Size(max = 15)
     private String phone;
 
     @Email

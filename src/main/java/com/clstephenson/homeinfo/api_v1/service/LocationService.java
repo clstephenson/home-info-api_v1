@@ -14,6 +14,8 @@ public interface LocationService {
 
     Location save(Location location);
 
+    void deleteByPropertyId(long propertyId);
+
     void deleteById(long id);
 
     boolean existsById(long id);

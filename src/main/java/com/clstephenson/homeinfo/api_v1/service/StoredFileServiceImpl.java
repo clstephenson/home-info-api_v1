@@ -74,6 +74,18 @@ public class StoredFileServiceImpl implements StoredFileService {
     }
 
     @Override
+    public boolean deleteAllByPropertyId(long propertyId) {
+        boolean returnValue = true;
+        List<StoredFile> storedFiles = findByPropertyId(propertyId);
+        for (StoredFile storedFile : storedFiles) {
+            if (delete(storedFile) == false) {
+                returnValue = false;
+            }
+        }
+        return returnValue;
+    }
+
+    @Override
     public boolean deleteAllByCategoryAndCategoryItemId(StoredFile.FileCategory category, long categoryItemId) {
         boolean returnValue = true;
         List<StoredFile> storedFiles = findByCategoryAndCategoryItemId(category, categoryItemId);

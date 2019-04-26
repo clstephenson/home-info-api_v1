@@ -1,5 +1,6 @@
 package com.clstephenson.homeinfo.api_v1.controller.web;
 
+import com.clstephenson.homeinfo.api_v1.logging.MyLogger;
 import com.clstephenson.homeinfo.api_v1.model.Property;
 import com.clstephenson.homeinfo.api_v1.model.PropertyList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
@@ -17,14 +19,14 @@ import java.util.List;
 @Controller
 public class PropertyController {
 
+    private final MyLogger LOGGER = new MyLogger(PropertyController.class);
+
     @Autowired
     private RestTemplateHelper restTemplateHelper;
 
     @GetMapping("/properties")
     public String properties(Model model, HttpServletRequest request,
                              @RequestParam(value = "user_id") long userId) {
-//        LoggedUser principal =  (LoggedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        User user = principal.getUser();
         String endpoint = ControllerHelper.getUrlBase(request) + "/apiv1/properties/user/{userId}";
         PropertyList propertyList = restTemplateHelper.getForEntity(PropertyList.class, endpoint, userId);
         List<Property> properties = propertyList == null ? Collections.emptyList() : propertyList.getProperties();
@@ -56,7 +58,7 @@ public class PropertyController {
         return "/property";
     }
 
-    @PostMapping("/property")
+    @PostMapping(value = "/property", params = "action=save")
     public String saveProperty(Model model, HttpServletRequest request,
                                @ModelAttribute("property") Property property,
                                @RequestParam(value = "user_id") long userId) {
@@ -82,4 +84,21 @@ public class PropertyController {
         return "/property";
     }
 
+    @PostMapping(value = "/property", params = "action=delete")
+    public RedirectView deleteVendor(Model model, HttpServletRequest request,
+                                     @ModelAttribute("property") Property property,
+                                     @RequestParam(value = "user_id") Long userId) {
+        String message = "";
+        if (property != null) {
+            String endpoint = ControllerHelper.getUrlBase(request) + "/apiv1/property/{propertyId}";
+            restTemplateHelper.delete(endpoint, property.getId());
+
+            message = "The property was deleted.";
+        } else {
+            message = "The property could not be deleted.  Please try again.";
+        }
+        model.addAttribute("message", message);
+        final String destination = String.format("/properties?user_id=%d", userId);
+        return ControllerHelper.redirectTo(request.getRequestURL().toString(), destination, LOGGER);
+    }
 }

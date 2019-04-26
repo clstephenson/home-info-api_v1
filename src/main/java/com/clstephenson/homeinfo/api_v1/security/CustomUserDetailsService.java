@@ -2,6 +2,8 @@ package com.clstephenson.homeinfo.api_v1.security;
 
 import com.clstephenson.homeinfo.api_v1.model.User;
 import com.clstephenson.homeinfo.api_v1.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 @Service("userDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 
+    Logger LOGGER = LoggerFactory.getLogger(CustomUserDetailsService.class);
+
     @Autowired
     UserService userService;
 
@@ -18,7 +22,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         try {
             User domainUser = userService.findByEmail(email)
-                    .orElseThrow(() -> new UsernameNotFoundException(email));
+                    .orElseThrow(() -> {
+                        LOGGER.info(String.format("Login Failed: Username '%s' not found", email));
+                        return new UsernameNotFoundException(email);
+                    });
             return new LoggedUser(domainUser);
         } catch (Exception e) {
             throw new RuntimeException(e);
