@@ -34,7 +34,7 @@ public class TaskController {
         model.addAttribute("userId", userId);
         model.addAttribute("propertyId", propertyId);
         model.addAttribute("tasks", tasks);
-        return "/tasks";
+        return "tasks";
     }
 
     @GetMapping("/task")
@@ -78,7 +78,7 @@ public class TaskController {
         model.addAttribute("action", action);
         model.addAttribute("userId", userId);
         model.addAttribute("task", task);
-        return "/task";
+        return "task";
     }
 
     @PostMapping(value = "/task", params = "action=save")

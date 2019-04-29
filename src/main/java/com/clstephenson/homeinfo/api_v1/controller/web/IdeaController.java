@@ -34,7 +34,7 @@ public class IdeaController {
         model.addAttribute("userId", userId);
         model.addAttribute("propertyId", propertyId);
         model.addAttribute("ideas", ideas);
-        return "/ideas";
+        return "ideas";
     }
 
     @GetMapping("/idea")
@@ -71,7 +71,7 @@ public class IdeaController {
         model.addAttribute("action", action);
         model.addAttribute("userId", userId);
         model.addAttribute("idea", idea);
-        return "/idea";
+        return "idea";
     }
 
     @PostMapping(value = "/idea", params = "action=save")

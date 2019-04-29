@@ -33,7 +33,7 @@ public class PropertyController {
 
         model.addAttribute("userId", userId);
         model.addAttribute("properties", properties);
-        return "/properties";
+        return "properties";
     }
 
     @GetMapping("/property")
@@ -55,7 +55,7 @@ public class PropertyController {
         model.addAttribute("action", action);
         model.addAttribute("userId", userId);
         model.addAttribute("property", property);
-        return "/property";
+        return "property";
     }
 
     @PostMapping(value = "/property", params = "action=save")
@@ -81,7 +81,7 @@ public class PropertyController {
         }
         model.addAttribute("userId", userId);
         model.addAttribute("message", message);
-        return "/property";
+        return "property";
     }
 
     @PostMapping(value = "/property", params = "action=delete")

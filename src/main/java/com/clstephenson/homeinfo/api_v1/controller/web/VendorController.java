@@ -31,7 +31,7 @@ public class VendorController {
 
         model.addAttribute("userId", userId);
         model.addAttribute("vendors", vendors);
-        return "/vendors";
+        return "vendors";
     }
 
     @GetMapping("/vendor")
@@ -53,7 +53,7 @@ public class VendorController {
         model.addAttribute("action", action);
         model.addAttribute("userId", userId);
         model.addAttribute("vendor", vendor);
-        return "/vendor";
+        return "vendor";
     }
 
     @PostMapping(value = "/vendor", params = "action=save")

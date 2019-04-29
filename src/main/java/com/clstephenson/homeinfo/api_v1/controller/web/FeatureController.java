@@ -33,7 +33,7 @@ public class FeatureController {
         model.addAttribute("userId", userId);
         model.addAttribute("propertyId", propertyId);
         model.addAttribute("features", features);
-        return "/features";
+        return "features";
     }
 
     @GetMapping("/feature")
@@ -76,7 +76,7 @@ public class FeatureController {
         model.addAttribute("action", action);
         model.addAttribute("userId", userId);
         model.addAttribute("feature", feature);
-        return "/feature";
+        return "feature";
     }
 
     @PostMapping(value = "/feature", params = "action=save")

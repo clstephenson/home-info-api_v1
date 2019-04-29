@@ -30,6 +30,8 @@ public class LocationServiceImplTest {
     private LocationService service;
     @MockBean
     private LocationRepository repository;
+    @MockBean
+    private FeatureService featureService;
     private Location location;
     private List<Location> locationList;
 

@@ -33,7 +33,7 @@ public class LocationController {
         model.addAttribute("userId", userId);
         model.addAttribute("propertyId", propertyId);
         model.addAttribute("locations", locations);
-        return "/locations";
+        return "locations";
     }
 
     @GetMapping("/location")
@@ -70,7 +70,7 @@ public class LocationController {
         model.addAttribute("action", action);
         model.addAttribute("userId", userId);
         model.addAttribute("location", location);
-        return "/location";
+        return "location";
     }
 
     @PostMapping(value = "/location", params = "action=save")

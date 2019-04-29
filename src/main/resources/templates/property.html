@@ -19,7 +19,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-3">
+        <div th:if="${!#strings.isEmpty(property.name)}" class="col-sm-3">
             <div th:replace="fragments/property-nav :: propertyNav(${property.id}, ${userId}, 'properties')"/>
         </div>
 
