@@ -32,15 +32,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/webjars/**", "/css/**", "/fonts/**", "/libs/**");
-        //web.ignoring().antMatchers("/403");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/webjars/**", "/css/**", "/fonts/**", "/libs/**", "/403").permitAll()
-                .antMatchers("/**", "/home", "/about", "/properties", "/apiv1/**").permitAll()
+                .antMatchers("/apiv1/**", "/403").permitAll()
+                .antMatchers("/**").denyAll()
                 //.anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").permitAll()
