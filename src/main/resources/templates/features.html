@@ -73,7 +73,7 @@
                             </thead>
                             <tbody>
                             <tr th:each="feature : ${features}"
-                                th:if="${feature.type} == ${T(com.clstephenson.homeinfo.api_v1.model.FeatureType).MATERIAL}">
+                                th:if="${feature.type} == ${T(com.clstephenson.homeinfo.model.FeatureType).MATERIAL}">
                                 <td>
                                     <a th:href="@{/feature(feature_id=${feature.id}, user_id=${userId}, property_id=${propertyId})}"
                                        th:text="${feature.name}"></a></td>
@@ -96,7 +96,7 @@
                             </thead>
                             <tbody>
                             <tr th:each="feature : ${features}"
-                                th:if="${feature.type} == ${T(com.clstephenson.homeinfo.api_v1.model.FeatureType).COLOR}">
+                                th:if="${feature.type} == ${T(com.clstephenson.homeinfo.model.FeatureType).COLOR}">
                                 <td>
                                     <a th:href="@{/feature(feature_id=${feature.id}, user_id=${userId}, property_id=${propertyId})}"
                                        th:text="${feature.name}"></a></td>
@@ -119,7 +119,7 @@
                             </thead>
                             <tbody>
                             <tr th:each="feature : ${features}"
-                                th:if="${feature.type} == ${T(com.clstephenson.homeinfo.api_v1.model.FeatureType).WINDOW}">
+                                th:if="${feature.type} == ${T(com.clstephenson.homeinfo.model.FeatureType).WINDOW}">
                                 <td>
                                     <a th:href="@{/feature(feature_id=${feature.id}, user_id=${userId}, property_id=${propertyId})}"
                                        th:text="${feature.name}"></a></td>
@@ -142,7 +142,7 @@
                             </thead>
                             <tbody>
                             <tr th:each="feature : ${features}"
-                                th:if="${feature.type} == ${T(com.clstephenson.homeinfo.api_v1.model.FeatureType).PLANT}">
+                                th:if="${feature.type} == ${T(com.clstephenson.homeinfo.model.FeatureType).PLANT}">
                                 <td>
                                     <a th:href="@{/feature(feature_id=${feature.id}, user_id=${userId}, property_id=${propertyId})}"
                                        th:text="${feature.name}"></a></td>
@@ -165,7 +165,7 @@
                             </thead>
                             <tbody>
                             <tr th:each="feature : ${features}"
-                                th:if="${feature.type} == ${T(com.clstephenson.homeinfo.api_v1.model.FeatureType).APPLIANCE}">
+                                th:if="${feature.type} == ${T(com.clstephenson.homeinfo.model.FeatureType).APPLIANCE}">
                                 <td>
                                     <a th:href="@{/feature(feature_id=${feature.id}, user_id=${userId}, property_id=${propertyId})}"
                                        th:text="${feature.name}"></a></td>
@@ -188,7 +188,7 @@
                             </thead>
                             <tbody>
                             <tr th:each="feature : ${features}"
-                                th:if="${feature.type} == ${T(com.clstephenson.homeinfo.api_v1.model.FeatureType).OTHER}">
+                                th:if="${feature.type} == ${T(com.clstephenson.homeinfo.model.FeatureType).OTHER}">
                                 <td>
                                     <a th:href="@{/feature(feature_id=${feature.id}, user_id=${userId}, property_id=${propertyId})}"
                                        th:text="${feature.name}"></a></td>

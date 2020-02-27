@@ -45,7 +45,7 @@
                                     <label th:for="type">Feature Type</label>
                                     <!--<input type="text" class="form-control" th:field="*{type}"/>-->
                                     <select class="form-control" name="type" id="type">
-                                        <option th:each="featureType : ${T(com.clstephenson.homeinfo.api_v1.model.FeatureType).values()}"
+                                        <option th:each="featureType : ${T(com.clstephenson.homeinfo.model.FeatureType).values()}"
                                                 th:value="${featureType}"
                                                 th:text="${featureType}"
                                                 th:selected="(${featureType}==*{type}) ? true : false">

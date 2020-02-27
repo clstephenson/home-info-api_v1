@@ -1,0 +1,12 @@
+version: '3'
+services: 
+    db:
+        image: clstephenson/home-info-system-demodb:latest
+    web:
+        image: clstephenson/home-info-system-webapp:latest
+        depends_on:
+          - db
+        ports:
+            - "5000:5000"
+        environment:
+            WAIT_HOSTS: db:3306

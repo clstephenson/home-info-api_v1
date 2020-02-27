@@ -9,17 +9,17 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.clstephenson.homeinfo</groupId>
-    <artifactId>home-project-api_v1</artifactId>
+    <artifactId>webapp</artifactId>
     <packaging>jar</packaging>
     <version>0.0.1</version>
-    <name>home-project-api_v1</name>
-    <description>Version 1 of web service for home information system</description>
+    <name>home-info-system</name>
+    <description>Web api and application for home information system</description>
 
     <properties>
         <java.version>1.8</java.version>
+        <springcloud.version>2.1.1.RELEASE</springcloud.version>
         <bootstrap.version>4.3.1</bootstrap.version>
         <jquery.version>3.4.0</jquery.version>
-        <springcloud.version>2.1.1.RELEASE</springcloud.version>
         <failsafe.version>2.22.1</failsafe.version>
         <thymeleaf.security.version>3.0.4.RELEASE</thymeleaf.security.version>
     </properties>
@@ -90,7 +90,6 @@
             <artifactId>thymeleaf-extras-springsecurity5</artifactId>
             <version>${thymeleaf.security.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
@@ -101,11 +100,11 @@
             <artifactId>jquery</artifactId>
             <version>${jquery.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-devtools</artifactId>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
@@ -168,7 +167,7 @@
                     <plugin>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
-                            <groups>com.clstephenson.homeinfo.api_v1.IntegrationTest</groups>
+                            <groups>com.clstephenson.homeinfo.api.IntegrationTest</groups>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -181,7 +180,7 @@
                     <plugin>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
-                            <excludedGroups>com.clstephenson.homeinfo.api_v1.IntegrationTest</excludedGroups>
+                            <excludedGroups>com.clstephenson.homeinfo.api.IntegrationTest</excludedGroups>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -194,8 +193,30 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <classifier>exec</classifier>
+                </configuration>
             </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-assembly-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <descriptorRefs>-->
+<!--                        <descriptorRef>jar-with-dependencies</descriptorRef>-->
+<!--                    </descriptorRefs>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>make-assembly</id>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>single</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
+
     </build>
 
 

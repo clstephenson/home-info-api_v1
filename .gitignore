@@ -1,7 +1,6 @@
-### SECURE APPLICATION FILES ###
-application-*.properties
 
 /logs/
+/uploads/
 
 HELP.md
 /target/
